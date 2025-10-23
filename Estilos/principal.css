@@ -1,0 +1,118 @@
+body {
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+/* 🔹 NAVBAR */
+
+.navbar-custom {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dee2e6;
+    padding: 0.7rem 3rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #0d6efd !important;
+}
+
+.nav-item {
+    margin-right: 10px;
+}
+
+
+/* 🔹 CONTENIDO PRINCIPAL */
+
+main {
+    flex: 1;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    padding: 10px 10px;
+    flex-wrap: wrap;
+}
+
+.hero-text {
+    max-width: 500px;
+    margin-top: -5px;
+}
+
+.hero-text h2 {
+    font-weight: bold;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+}
+
+
+/* 🔹 TARJETAS GRANDES Y MUY ESPACIADAS */
+
+.icon-section {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 60px;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+.icon-card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    height: 190px;
+    text-align: center;
+    padding: 30px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.icon-card i {
+    font-size: 3.3rem;
+    color: #0d6efd;
+    transition: color 0.3s ease;
+}
+
+.icon-card h5 {
+    color: #000;
+    transition: color 0.3s ease;
+}
+
+
+/* 🔹 EFECTO HOVER */
+
+.icon-card:hover {
+    background-color: #0d6efd;
+    transform: scale(1.08);
+}
+
+.icon-card:hover i,
+.icon-card:hover h5 {
+    color: #fff;
+}
+
+
+/* 🔹 ICONO USUARIO */
+
+.hero i {
+    font-size: 190px;
+    color: #0d6efd;
+}
+
+
+/* 🔹 FOOTER ABAJO */
+
+footer {
+    margin-top: auto;
+    background-color: #f8f9fa;
+    padding: 15px 0;
+}
