@@ -9,7 +9,6 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
@@ -26,14 +25,13 @@
                     <li class="nav-item"><a class="nav-link active" href="principal.php">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="declarar.php">Declarar Renta</a></li>
                     <li class="nav-item"><a class="nav-link" href="historial.php">Historial</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Guías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="guia.php">Guías</a></li>
                     <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Perfil</a></li>
                 </ul>
             </div>
         </div>
     </nav>
     <script>
-        // Detecta la página actual y aplica la clase "active" al enlace correspondiente
         const currentPage = window.location.pathname.split("/").pop();
         const navLinks = document.querySelectorAll(".nav-link");
 

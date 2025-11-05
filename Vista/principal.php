@@ -47,7 +47,7 @@
             </div>
 
             <div class="col-6 col-md-3">
-                <div class="icon-card" data-href="guias.php">
+                <div class="icon-card" data-href="guia.php">
                     <i class="fa-solid fa-book"></i>
                     <h5 class="mt-3">Guías Prácticas</h5>
                 </div>
@@ -85,7 +85,6 @@
                 });
             });
 
-            // 🔹 Variable renombrada para evitar conflicto
             const currentPath = window.location.pathname.split("/").pop();
 
             iconCards.forEach(card => {
