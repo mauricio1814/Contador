@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Renta</title>
+    <link rel="icon" type="image/png" href="../IMG/chart-line-solid-full.svg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="../Estilos/principal.css">
@@ -16,7 +17,7 @@
     <?php include '../Includ/navbar.php'; ?>
 
 
-    <!-- 🔹 CONTENIDO PRINCIPAL -->
+    <!-- CONTENIDO PRINCIPAL -->
     <main class="container hero">
         <div class="hero-text">
             <h2>Hola, Wilson 👋</h2>
@@ -28,44 +29,40 @@
         </div>
     </main>
 
-<!-- 🔹 SECCIÓN DE OPCIONES -->
-<div class="container icon-section mt-4">
-    <div class="row justify-content-center">
-        <!-- Declarar Renta -->
-        <div class="col-6 col-md-3">
-            <div class="icon-card" data-href="declarar.php">
-                <i class="fa-solid fa-file-invoice-dollar"></i>
-                <h5 class="mt-3">Declarar Renta</h5>
+    <!-- SECCIÓN DE OPCIONES -->
+    <div class="container icon-section mt-4">
+        <div class="row justify-content-center">
+            <div class="col-6 col-md-3">
+                <div class="icon-card" data-href="declarar.php">
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                    <h5 class="mt-3">Declarar Renta</h5>
+                </div>
             </div>
-        </div>
 
-        <!-- Historial -->
-        <div class="col-6 col-md-3">
-            <div class="icon-card" data-href="historial.php">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-                <h5 class="mt-3">Historial de Declaraciones</h5>
+            <div class="col-6 col-md-3">
+                <div class="icon-card" data-href="historial.php">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <h5 class="mt-3">Historial de Declaraciones</h5>
+                </div>
             </div>
-        </div>
 
-        <!-- Guías -->
-        <div class="col-6 col-md-3">
-            <div class="icon-card" data-href="guias.php">
-                <i class="fa-solid fa-book"></i>
-                <h5 class="mt-3">Guías Prácticas</h5>
+            <div class="col-6 col-md-3">
+                <div class="icon-card" data-href="guias.php">
+                    <i class="fa-solid fa-book"></i>
+                    <h5 class="mt-3">Guías Prácticas</h5>
+                </div>
             </div>
-        </div>
 
-        <!-- Soporte -->
-        <div class="col-6 col-md-3">
-            <div class="icon-card" data-href="soporte.php">
-                <i class="fa-solid fa-headset"></i>
-                <h5 class="mt-3">Soporte</h5>
+            <div class="col-6 col-md-3">
+                <div class="icon-card" data-href="soporte.php">
+                    <i class="fa-solid fa-headset"></i>
+                    <h5 class="mt-3">Soporte</h5>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-    <!-- 🔹 FOOTER -->
+    <!--  FOOTER -->
     <footer>
         <div class="container">
             <div class="alert alert-secondary d-flex justify-content-between align-items-center" role="alert">
@@ -78,27 +75,30 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-    // 🔹 Detecta clic en los iconos y redirige
-    const iconCards = document.querySelectorAll(".icon-card");
+        document.addEventListener("DOMContentLoaded", () => {
+            const iconCards = document.querySelectorAll(".icon-card");
 
-    iconCards.forEach(card => {
-        card.addEventListener("click", () => {
-            const target = card.getAttribute("data-href");
-            window.location.href = target; // redirige a la página correspondiente
+            iconCards.forEach(card => {
+                card.addEventListener("click", () => {
+                    const target = card.getAttribute("data-href");
+                    if (target) window.location.href = target;
+                });
+            });
+
+            // 🔹 Variable renombrada para evitar conflicto
+            const currentPath = window.location.pathname.split("/").pop();
+
+            iconCards.forEach(card => {
+                const page = card.getAttribute("data-href");
+                if (page === currentPath) {
+                    card.classList.add("active-card");
+                } else {
+                    card.classList.remove("active-card");
+                }
+            });
         });
-    });
+    </script>
 
-    // 🔹 Marca como activa la tarjeta correspondiente según la página actual
-    const currentPage = window.location.pathname.split("/").pop();
-    iconCards.forEach(card => {
-        const page = card.getAttribute("data-href");
-        if (page === currentPage) {
-            card.classList.add("active-card");
-        } else {
-            card.classList.remove("active-card");
-        }
-    });
-</script>
 
 </body>
 

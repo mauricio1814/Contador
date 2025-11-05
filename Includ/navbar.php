@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../Estilos/principal.css">
 </head>
+
 <body>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-custom">
@@ -23,16 +25,16 @@
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="principal.php">Inicio</a></li>
                     <li class="nav-item"><a class="nav-link" href="declarar.php">Declarar Renta</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Historial</a></li>
+                    <li class="nav-item"><a class="nav-link" href="historial.php">Historial</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Guías</a></li>
                     <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Perfil</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-  <script>
+    <script>
         // Detecta la página actual y aplica la clase "active" al enlace correspondiente
-        const currentPage = window.location.pathname.split("/").pop(); 
+        const currentPage = window.location.pathname.split("/").pop();
         const navLinks = document.querySelectorAll(".nav-link");
 
         navLinks.forEach(link => {
@@ -47,5 +49,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
 
+</html>
