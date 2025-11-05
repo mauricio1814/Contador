@@ -12,17 +12,17 @@
 
 <body>
     <?php include '../Includ/navbar.php'; ?>
-    
-  <!-- 🔹 CONTENIDO -->
+
+    <!-- 🔹 CONTENIDO -->
     <main class="container form-section">
         <h1>Declarar Renta</h1>
-        <div class="row mt-4">
-            <div class="col-md-6">
+        <div class="row mt-5">
+            <div class="col-md-6 text-center">
                 <label for="fecha" class="form-label fw-semibold">Fecha</label>
-                <input type="date" id="fecha" class="form-control" value="<?php echo date('Y-m-d'); ?>">
+                <input type="date" id="fecha" class="form-control">
             </div>
 
-            <div class="col-md-6">
+            <div class="col-md-6 text-center">
                 <label for="documentos" class="form-label fw-semibold">Documentos</label>
                 <input type="file" id="documentos" class="form-control" multiple>
             </div>
@@ -30,13 +30,17 @@
 
         <div class="mt-4" id="listaDocumentos"></div>
 
-        <div class="d-flex justify-content-center gap-3 mt-4">
-            <button id="btnCargar" class="btn btn-custom">
-                <i class="fa-solid fa-folder-open me-2"></i> Cargar Documentos
-            </button>
-            <button id="btnSubir" class="btn btn-success">
-                <i class="fa-solid fa-cloud-arrow-up me-2"></i> Subir
-            </button>
+        <div class="row mt-4">
+            <div class="col-md-6 text-center">
+                <button id="btnCargar" class="btn btn-custom">
+                    <i class="fa-solid fa-folder-open me-2"></i> Cargar Documentos
+                </button>
+            </div>
+            <div class="col-md-6 text-center">
+                <button id="btnSubir" class="btn btn-success">
+                    <i class="fa-solid fa-cloud-arrow-up me-2"></i> Subir
+                </button>
+            </div>
         </div>
     </main>
 
@@ -88,4 +92,5 @@
     </script>
 
 </body>
+
 </html>
