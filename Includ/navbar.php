@@ -22,11 +22,12 @@
 
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="principal.php">Inicio</a></li>
-                    <li class="nav-item"><a class="nav-link" href="declarar.php">Declarar Renta</a></li>
-                    <li class="nav-item"><a class="nav-link" href="historial.php">Historial</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guia.php">Guías</a></li>
-                    <li class="nav-item"><a class="nav-link disabled" aria-disabled="true">Perfil</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="principal.php"><i class="fas fa-home"></i>  Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="declarar.php"><i class="fas fa-file"></i>  Declarar Renta</a></li>
+                    <li class="nav-item"><a class="nav-link" href="historial.php"><i class="fas fa-history"></i>  Historial</a></li>
+                    <li class="nav-item"><a class="nav-link" href="guia.php"><i class="fas fa-book"></i>  Guías</a></li>
+                    <li class="nav-item"><a class="nav-link" href="soporte.php"><i class="fas fa-life-ring"></i>  Soporte</a></li>
+                    <li class="nav-item"><a class="nav-link"><i class="fas fa-user"></i>  Perfil</a></li>
                 </ul>
             </div>
         </div>
