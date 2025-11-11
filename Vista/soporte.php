@@ -1,3 +1,8 @@
+<?php
+include_once '../includes/session.php';
+redirectIfNotLoggedIn();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -226,7 +231,7 @@
     </style>
 </head>
 <body>
-    <?php include '../Includ/navbar.php'; ?>   
+    <?php include '../navbar.php'; ?>   
 
     <!-- Header -->
     <div class="header-section">

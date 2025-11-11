@@ -19,26 +19,72 @@ function isContribuyente() {
 
 function redirectIfNotLoggedIn() {
     if (!isLoggedIn()) {
-        header("Location: ../login.php");
+        // Determinar la ruta correcta al login
+        $current_dir = dirname($_SERVER['PHP_SELF']);
+        
+        // Si estamos en la carpeta Vista, subir un nivel
+        if (strpos($current_dir, '/Vista') !== false) {
+            header("Location: ../Vista/login.php");
+        } else {
+            header("Location: Vista/login.php");
+        }
         exit();
     }
 }
 
 function redirectBasedOnRole() {
     if (isLoggedIn()) {
+        $current_page = basename($_SERVER['PHP_SELF']);
+        $current_dir = dirname($_SERVER['PHP_SELF']);
+        
+        $target_page = '';
         switch ($_SESSION['user_rol']) {
             case 'admin':
-                header("Location: perfil-admin.php");
+                $target_page = 'perfil-admin.php';
                 break;
             case 'contador':
-                header("Location: perfil-contador.php");
+                $target_page = 'perfil-contador.php';
                 break;
             case 'usuario':
-                header("Location: principal.php");
+                $target_page = 'principal.php';
                 break;
             default:
-                header("Location: principal.php");
+                $target_page = 'principal.php';
         }
+        
+        // Solo redirigir si no estamos ya en la página objetivo
+        if ($current_page !== $target_page) {
+            // Si estamos en la raíz, ir a Vista
+            if (strpos($current_dir, '/Vista') === false && $current_dir !== '/') {
+                header("Location: Vista/" . $target_page);
+            } else {
+                header("Location: " . $target_page);
+            }
+            exit();
+        }
+    }
+}
+
+// Función para verificar admin
+function requireAdmin() {
+    if (!isAdmin()) {
+        header("Location: principal.php");
+        exit();
+    }
+}
+
+// Función para verificar contador
+function requireContador() {
+    if (!isContador()) {
+        header("Location: principal.php");
+        exit();
+    }
+}
+
+// Función para verificar contribuyente
+function requireContribuyente() {
+    if (!isContribuyente()) {
+        header("Location: principal.php");
         exit();
     }
 }

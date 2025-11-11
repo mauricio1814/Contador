@@ -1,10 +1,10 @@
 <?php
-include_once 'config/database.php';
-include_once 'includes/session.php';
+include_once '../config/database.php';
+include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isAdmin()) {
-    header("Location: principal.php");
+    header("Location: /Vista/principal.php");
     exit();
 }
 
@@ -165,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
     </style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <div class="container mt-4">
         <div class="row justify-content-center">
