@@ -1,10 +1,10 @@
 <?php
-include_once 'config/database.php';
-include_once 'includes/session.php';
+include_once '../config/database.php';
+include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isAdmin()) {
-    header("Location: principal.php");
+    header("Location: /Vista/principal.php");
     exit();
 }
 
@@ -93,7 +93,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
     </style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <div class="container mt-4">
         <!-- Header del Perfil -->
@@ -112,7 +112,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
                                 </a>
                                 
                                 <!-- Botón de Cerrar Sesión -->
-                                <a href="logout.php" class="btn btn-logout" 
+                                <a href="../logout.php" class="btn btn-logout" 
                                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
                                     <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                                 </a>

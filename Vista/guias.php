@@ -1,3 +1,8 @@
+<?php
+include_once '../includes/session.php';
+redirectIfNotLoggedIn();
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -181,7 +186,7 @@
 </head>
 
 <body>
-    <?php include '../Includ/navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <div class="container-main">
         <div class="page-header">

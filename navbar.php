@@ -1,5 +1,5 @@
 <?php
-include_once 'includes/session.php';
+include_once '../includes/session.php';
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +10,7 @@ include_once 'includes/session.php';
     <title>Renta Segura</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link rel="stylesheet" href="Estilos/principal.css">
+    <link rel="stylesheet" href="../Estilos/principal.css">
     <style>
         .navbar-custom {
             background-color: #ffffff;

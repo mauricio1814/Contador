@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <?php include '../Includ/navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <main class="container form-section">
         <div class="align-items-center mb-4">

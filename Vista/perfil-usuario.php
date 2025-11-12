@@ -1,10 +1,10 @@
 <?php
-include_once 'config/database.php';
-include_once 'includes/session.php';
+include_once '../config/database.php';
+include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isContribuyente()) {
-    header("Location: principal.php");
+    header("Location: /Vista/principal.php");
     exit();
 }
 ?>
@@ -19,7 +19,7 @@ if (!isContribuyente()) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <div class="container mt-4">
         <div class="row">
@@ -32,7 +32,7 @@ if (!isContribuyente()) {
                                 <p class="text-muted">Contribuyente</p>
                             </div>
                             <div class="col-md-4 text-end">
-                                <a href="logout.php" class="btn btn-outline-danger" 
+                                <a href="../logout.php" class="btn btn-outline-danger" 
                                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
                                     <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                                 </a>

@@ -1,19 +1,17 @@
 <?php
-include_once 'config/database.php';
-include_once 'includes/session.php';
+include_once '../config/database.php';
+include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isAdmin()) {
-    header("Location: principal.php");
+    header("Location: /Vista/principal.php");
     exit();
 }
 
 $database = new Database();
 $db = $database->getConnection();
 
-// =============================================
-// LÓGICA PARA ELIMINAR USUARIO
-// =============================================
+
 if (isset($_GET['eliminar']) && !empty($_GET['eliminar'])) {
     $id_usuario_eliminar = $_GET['eliminar'];
     
@@ -266,7 +264,7 @@ if (isset($_SESSION['error'])) {
     </style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <div class="container mt-4">
         <!-- Mostrar mensajes de éxito/error -->

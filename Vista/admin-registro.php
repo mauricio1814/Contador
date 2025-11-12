@@ -1,10 +1,10 @@
 <?php
-include_once 'config/database.php';
-include_once 'includes/session.php';
+include_once '../config/database.php';
+include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isAdmin()) {
-    header("Location: principal.php");
+    header("Location: /Vista/principal.php");
     exit();
 }
 
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                     
                     // Si viene de la lista, mantener el contexto de lista
                     if ($from_list) {
-                        $return_url = 'admin-usuarios.php';
+                        $return_url = '/Vista/admin-usuarios.php';
                         $return_text = 'Volver a la Lista';
                     }
                     
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
     </style>
 </head>
 <body>
-    <?php include 'navbar.php'; ?>
+    <?php include '../navbar.php'; ?>
 
     <div class="container mt-4">
         <div class="row justify-content-center">
