@@ -4,7 +4,7 @@ include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isAdmin()) {
-    header("Location: /Vista/principal.php");
+    header("Location: principal.php");
     exit();
 }
 
