@@ -4,14 +4,16 @@ include_once '../includes/session.php';
 
 redirectIfNotLoggedIn();
 if (!isAdmin()) {
-    header("Location: /Vista/principal.php");
+    header("Location: principal.php");
     exit();
 }
 
 $database = new Database();
 $db = $database->getConnection();
 
-
+// =============================================
+// LÓGICA PARA ELIMINAR USUARIO
+// =============================================
 if (isset($_GET['eliminar']) && !empty($_GET['eliminar'])) {
     $id_usuario_eliminar = $_GET['eliminar'];
     
@@ -261,6 +263,21 @@ if (isset($_SESSION['error'])) {
             gap: 5px;
             margin-top: 5px;
         }
+        /* CORRECCIÓN PARA LAS PESTAÑAS */
+        .tab-content > .tab-pane {
+            display: none;
+        }
+        .tab-content > .active {
+            display: block;
+        }
+        /* Asegurar que Bootstrap maneje la visibilidad */
+        .fade:not(.show) {
+            opacity: 0;
+        }
+        .fade.show {
+            opacity: 1;
+            transition: opacity 0.15s linear;
+        }
     </style>
 </head>
 <body>
@@ -295,6 +312,11 @@ if (isset($_SESSION['error'])) {
                     <a href="admin-registro.php" class="btn btn-agregar">
                         <i class="fas fa-plus me-2"></i>Agregar Usuario
                     </a>
+                    <!-- 
+                    <a href="perfil-admin.php" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Volver al Perfil
+                    </a>
+                    -->
                 </div>
             </div>
         </div>
@@ -303,28 +325,28 @@ if (isset($_SESSION['error'])) {
         <ul class="nav nav-tabs mb-4" id="userTabs" role="tablist">
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="todos-tab" data-bs-toggle="tab" 
-                        data-bs-target="#todos" type="button" role="tab">
+                        data-bs-target="#todos" type="button" role="tab" aria-controls="todos" aria-selected="true">
                     <i class="fas fa-users me-2"></i>Todos los Usuarios
                     <span class="badge bg-secondary ms-2"><?php echo count($usuarios); ?></span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contribuyentes-tab" data-bs-toggle="tab" 
-                        data-bs-target="#contribuyentes" type="button" role="tab">
+                        data-bs-target="#contribuyentes" type="button" role="tab" aria-controls="contribuyentes" aria-selected="false">
                     <i class="fas fa-user me-2"></i>Contribuyentes
                     <span class="badge bg-primary ms-2"><?php echo count($contribuyentes); ?></span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="contadores-tab" data-bs-toggle="tab" 
-                        data-bs-target="#contadores" type="button" role="tab">
+                        data-bs-target="#contadores" type="button" role="tab" aria-controls="contadores" aria-selected="false">
                     <i class="fas fa-user-tie me-2"></i>Contadores
                     <span class="badge bg-success ms-2"><?php echo count($contadores); ?></span>
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="admins-tab" data-bs-toggle="tab" 
-                        data-bs-target="#admins" type="button" role="tab">
+                        data-bs-target="#admins" type="button" role="tab" aria-controls="admins" aria-selected="false">
                     <i class="fas fa-user-shield me-2"></i>Administradores
                     <span class="badge bg-danger ms-2"><?php echo count($admins); ?></span>
                 </button>
@@ -334,7 +356,7 @@ if (isset($_SESSION['error'])) {
         <!-- Contenido de Pestañas -->
         <div class="tab-content" id="userTabsContent">
             <!-- Pestaña Todos los Usuarios -->
-            <div class="tab-pane fade show active" id="todos" role="tabpanel">
+            <div class="tab-pane fade show active" id="todos" role="tabpanel" aria-labelledby="todos-tab">
                 <div class="row">
                     <?php if (empty($usuarios)): ?>
                         <div class="col-12">
@@ -421,7 +443,7 @@ if (isset($_SESSION['error'])) {
             </div>
 
             <!-- Pestaña Contribuyentes -->
-            <div class="tab-pane fade" id="contribuyentes" role="tabpanel">
+            <div class="tab-pane fade" id="contribuyentes" role="tabpanel" aria-labelledby="contribuyentes-tab">
                 <div class="row">
                     <?php if (empty($contribuyentes)): ?>
                         <div class="col-12">
@@ -496,7 +518,7 @@ if (isset($_SESSION['error'])) {
             </div>
 
             <!-- Pestaña Contadores -->
-            <div class="tab-pane fade" id="contadores" role="tabpanel">
+            <div class="tab-pane fade" id="contadores" role="tabpanel" aria-labelledby="contadores-tab">
                 <div class="row">
                     <?php if (empty($contadores)): ?>
                         <div class="col-12">
@@ -559,7 +581,7 @@ if (isset($_SESSION['error'])) {
             </div>
 
             <!-- Pestaña Administradores -->
-            <div class="tab-pane fade" id="admins" role="tabpanel">
+            <div class="tab-pane fade" id="admins" role="tabpanel" aria-labelledby="admins-tab">
                 <div class="row">
                     <?php if (empty($admins)): ?>
                         <div class="col-12">
@@ -626,36 +648,9 @@ if (isset($_SESSION['error'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Asegurar que solo se muestre el contenido de la pestaña activa
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabPanes = document.querySelectorAll('.tab-pane');
-            const tabButtons = document.querySelectorAll('.nav-link');
-            
-            // Ocultar todos los tab-panes excepto el activo
-            tabPanes.forEach(pane => {
-                if (!pane.classList.contains('show') && !pane.classList.contains('active')) {
-                    pane.style.display = 'none';
-                }
-            });
-            
-            // Manejar cambios de pestaña
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const target = this.getAttribute('data-bs-target');
-                    
-                    // Ocultar todos los paneles
-                    tabPanes.forEach(pane => {
-                        pane.style.display = 'none';
-                    });
-                    
-                    // Mostrar solo el panel objetivo
-                    const targetPane = document.querySelector(target);
-                    if (targetPane) {
-                        targetPane.style.display = 'block';
-                    }
-                });
-            });
-        });
+        // CORRECCIÓN PARA LAS PESTAÑAS - ELIMINAR EL JAVASCRIPT CONFLICTIVO
+        // Bootstrap 5 maneja automáticamente la visibilidad de las pestañas
+        // No necesitamos JavaScript adicional para mostrar/ocultar
 
         // Función para confirmar eliminación de usuario
         function confirmarEliminacion(idUsuario, nombreUsuario, rolUsuario) {
@@ -678,6 +673,19 @@ if (isset($_SESSION['error'])) {
                 window.location.href = `admin-usuarios.php?eliminar=${idUsuario}`;
             }
         }
+
+        // Inicialización adicional para asegurar que las pestañas funcionen correctamente
+        document.addEventListener('DOMContentLoaded', function() {
+            // Asegurar que la primera pestaña esté activa
+            const firstTab = document.querySelector('#todos-tab');
+            const firstTabPane = document.querySelector('#todos');
+            
+            if (firstTab && firstTabPane) {
+                firstTab.classList.add('active');
+                firstTab.setAttribute('aria-selected', 'true');
+                firstTabPane.classList.add('show', 'active');
+            }
+        });
     </script>
 </body>
-</html> 
+</html>

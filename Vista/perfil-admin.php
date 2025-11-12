@@ -112,7 +112,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
                                 </a>
                                 
                                 <!-- Botón de Cerrar Sesión -->
-                                <a href="../logout.php" class="btn btn-logout" 
+                                <a href="../logout.php" class="btn btn-outline-danger" 
                                    onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
                                     <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                                 </a>
