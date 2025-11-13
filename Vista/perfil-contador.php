@@ -1,4 +1,4 @@
-<?php
+success<?php
 include_once '../config/database.php';
 include_once '../includes/session.php';
 
@@ -62,6 +62,8 @@ $total_contribuyentes = count($contribuyentes);
         .stats-card {
             text-align: center;
             background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border-radius: 15px;
             padding: 20px;
@@ -128,7 +130,7 @@ $total_contribuyentes = count($contribuyentes);
                     <div class="row align-items-center">
                         <div class="col-md-6">
                             <h2 class="mb-1">Bienvenido, <?php echo $contador['nombre'] . ' ' . $contador['apellido']; ?></h2>
-                            <p class="text-muted mb-0">Contador Público</p>
+                            <p class="text-muted mb-0">Contador</p>
                         </div>
                         <div class="col-md-6 text-end">
                             <div class="d-flex justify-content-end align-items-center gap-3">
@@ -176,27 +178,27 @@ $total_contribuyentes = count($contribuyentes);
                     <h4 class="mb-3"><i class="fas fa-user-circle me-2"></i>Información Personal</h4>
                     
                     <div class="mb-3">
-                        <strong><i class="fa fa-user me-2 text-primary"></i>Nombre:</strong><br>
+                        <strong><i class="fa fa-user me-2 text-success"></i>Nombre:</strong><br>
                         <?php echo $contador['nombre'] ?? 'N/A'; ?> <?php echo $contador['apellido'] ?? 'N/A'; ?>
                     </div>
                     
                     <div class="mb-3">
-                        <strong><i class="fas fa-id-card me-2 text-primary"></i>Documento:</strong><br>
+                        <strong><i class="fas fa-id-card me-2 text-success"></i>Documento:</strong><br>
                         <?php echo $contador['tipo_documento'] ?? 'N/A'; ?>: <?php echo $contador['numero_documento'] ?? 'N/A'; ?>
                     </div>
                     
                     <div class="mb-3">
-                        <strong><i class="fas fa-envelope me-2 text-primary"></i>Correo:</strong><br>
+                        <strong><i class="fas fa-envelope me-2 text-success"></i>Correo:</strong><br>
                         <?php echo $contador['correo'] ?? 'N/A'; ?>
                     </div>
                     
                     <div class="mb-3">
-                        <strong><i class="fas fa-phone me-2 text-primary"></i>Teléfono:</strong><br>
+                        <strong><i class="fas fa-phone me-2 text-success"></i>Teléfono:</strong><br>
                         <?php echo $contador['telefono'] ?? 'No registrado'; ?>
                     </div>
 
                     <div class="mb-3">
-                        <strong><i class="fa fa-user me-2 text-primary"></i>Cargo:</strong><br>
+                        <strong><i class="fa fa-user me-2 text-success"></i>Cargo:</strong><br>
                         <?php echo $contador['rol'] ?? 'N/A'; ?>
                     </div>
                                         
