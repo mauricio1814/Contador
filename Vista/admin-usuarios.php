@@ -278,6 +278,31 @@ if (isset($_SESSION['error'])) {
             opacity: 1;
             transition: opacity 0.15s linear;
         }
+        /* ESTILOS PARA EL HEADER COMO EN LA CAPTURA */
+        .page-header {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 25px;
+        }
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: #0d6efd;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
     </style>
 </head>
 <body>
@@ -301,22 +326,20 @@ if (isset($_SESSION['error'])) {
             </div>
         <?php endif; ?>
 
-        <!-- Header -->
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <h2 class="mb-1">Renta Segura</h2>
-                        <h4 class="text-primary">Gestión de Usuarios</h4>
-                    </div>
+        <!-- HEADER COMO EN LA CAPTURA -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="page-title">Renta Segura</h1>
+                    <h2 class="page-subtitle">Gestión de Usuarios</h2>
+                </div>
+                <div class="header-actions">
                     <a href="admin-registro.php" class="btn btn-agregar">
                         <i class="fas fa-plus me-2"></i>Agregar Usuario
                     </a>
-                    <!-- 
                     <a href="perfil-admin.php" class="btn btn-outline-primary">
                         <i class="fas fa-arrow-left me-2"></i>Volver al Perfil
                     </a>
-                    -->
                 </div>
             </div>
         </div>
@@ -648,10 +671,6 @@ if (isset($_SESSION['error'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // CORRECCIÓN PARA LAS PESTAÑAS - ELIMINAR EL JAVASCRIPT CONFLICTIVO
-        // Bootstrap 5 maneja automáticamente la visibilidad de las pestañas
-        // No necesitamos JavaScript adicional para mostrar/ocultar
-
         // Función para confirmar eliminación de usuario
         function confirmarEliminacion(idUsuario, nombreUsuario, rolUsuario) {
             let mensaje = `¿Estás seguro de que deseas ELIMINAR COMPLETAMENTE al usuario "${nombreUsuario}"?\n\n`;

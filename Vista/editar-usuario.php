@@ -43,6 +43,29 @@ $stmt_contadores->bindParam(":current_id", $usuario_id);
 $stmt_contadores->execute();
 $contadores = $stmt_contadores->fetchAll(PDO::FETCH_ASSOC);
 
+// Definir colores según el rol del usuario que se está editando
+switch($usuario['rol']) {
+    case 'admin':
+        $color_principal = '#dc3545'; // ROJO para admin
+        $color_hover = '#c82333';
+        $rol_display = 'Administrador';
+        break;
+    case 'contador':
+        $color_principal = '#28a745'; // VERDE para contador
+        $color_hover = '#218838';
+        $rol_display = 'Contador';
+        break;
+    case 'usuario':
+        $color_principal = '#3498db'; // AZUL para contribuyente
+        $color_hover = '#2980b9';
+        $rol_display = 'Contribuyente';
+        break;
+    default:
+        $color_principal = '#6c757d';
+        $color_hover = '#5a6268';
+        $rol_display = 'Usuario';
+}
+
 // Procesar actualización
 $error = '';
 $success = '';
@@ -57,6 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
     $rol = $_POST['rol'];
     $activo = isset($_POST['activo']) ? 1 : 0;
     $contador_asignado = ($rol == 'usuario' && !empty($_POST['contador_asignado'])) ? $_POST['contador_asignado'] : null;
+    $nueva_contrasena = trim($_POST['contrasena']);
 
     // Validaciones
     if (empty($nombre) || empty($apellido) || empty($correo)) {
@@ -72,41 +96,70 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
         if ($check_stmt->rowCount() > 0) {
             $error = "El correo electrónico ya está registrado por otro usuario.";
         } else {
-            // Actualizar usuario
-            $query = "UPDATE usuario 
-                      SET nombre = :nombre, apellido = :apellido, tipo_documento = :tipo_documento, 
-                          numero_documento = :numero_documento, correo = :correo, telefono = :telefono,
-                          rol = :rol, activo = :activo, contador_asignado = :contador_asignado
-                      WHERE id_usuario = :id_usuario";
+            // Verificar si el número de documento ya existe en otro usuario
+            if (!empty($numero_documento)) {
+                $check_doc_query = "SELECT id_usuario FROM usuario WHERE numero_documento = :numero_documento AND id_usuario != :id";
+                $check_doc_stmt = $db->prepare($check_doc_query);
+                $check_doc_stmt->bindParam(":numero_documento", $numero_documento);
+                $check_doc_stmt->bindParam(":id", $usuario_id);
+                $check_doc_stmt->execute();
+                
+                if ($check_doc_stmt->rowCount() > 0) {
+                    $error = "El número de documento ya está registrado por otro usuario.";
+                }
+            }
             
-            $stmt = $db->prepare($query);
-            $stmt->bindParam(":nombre", $nombre);
-            $stmt->bindParam(":apellido", $apellido);
-            $stmt->bindParam(":tipo_documento", $tipo_documento);
-            $stmt->bindParam(":numero_documento", $numero_documento);
-            $stmt->bindParam(":correo", $correo);
-            $stmt->bindParam(":telefono", $telefono);
-            $stmt->bindParam(":rol", $rol);
-            $stmt->bindParam(":activo", $activo);
-            $stmt->bindParam(":contador_asignado", $contador_asignado);
-            $stmt->bindParam(":id_usuario", $usuario_id);
-            
-            if ($stmt->execute()) {
-                $success = "Usuario actualizado exitosamente.";
-                // Actualizar la información del usuario en la variable
-                $usuario = array_merge($usuario, [
-                    'nombre' => $nombre,
-                    'apellido' => $apellido,
-                    'tipo_documento' => $tipo_documento,
-                    'numero_documento' => $numero_documento,
-                    'correo' => $correo,
-                    'telefono' => $telefono,
-                    'rol' => $rol,
-                    'activo' => $activo,
-                    'contador_asignado' => $contador_asignado
-                ]);
-            } else {
-                $error = "Error al actualizar el usuario. Por favor, intenta nuevamente.";
+            if (empty($error)) {
+                // Construir la consulta UPDATE dinámicamente
+                $query = "UPDATE usuario 
+                         SET nombre = :nombre, apellido = :apellido, tipo_documento = :tipo_documento, 
+                             numero_documento = :numero_documento, correo = :correo, telefono = :telefono,
+                             rol = :rol, activo = :activo, contador_asignado = :contador_asignado";
+                
+                $params = [
+                    ":nombre" => $nombre,
+                    ":apellido" => $apellido,
+                    ":tipo_documento" => $tipo_documento,
+                    ":numero_documento" => $numero_documento,
+                    ":correo" => $correo,
+                    ":telefono" => $telefono,
+                    ":rol" => $rol,
+                    ":activo" => $activo,
+                    ":contador_asignado" => $contador_asignado,
+                    ":id_usuario" => $usuario_id
+                ];
+                
+                // Si se proporcionó una nueva contraseña, actualizarla
+                if (!empty($nueva_contrasena)) {
+                    $query .= ", contrasena = :contrasena";
+                    $params[":contrasena"] = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
+                }
+                
+                $query .= " WHERE id_usuario = :id_usuario";
+                
+                $stmt = $db->prepare($query);
+                
+                if ($stmt->execute($params)) {
+                    $success = "Usuario actualizado exitosamente.";
+                    if (!empty($nueva_contrasena)) {
+                        $success .= " La contraseña ha sido actualizada.";
+                    }
+                    
+                    // Actualizar la información del usuario en la variable
+                    $usuario = array_merge($usuario, [
+                        'nombre' => $nombre,
+                        'apellido' => $apellido,
+                        'tipo_documento' => $tipo_documento,
+                        'numero_documento' => $numero_documento,
+                        'correo' => $correo,
+                        'telefono' => $telefono,
+                        'rol' => $rol,
+                        'activo' => $activo,
+                        'contador_asignado' => $contador_asignado
+                    ]);
+                } else {
+                    $error = "Error al actualizar el usuario. Por favor, intenta nuevamente.";
+                }
             }
         }
     }
@@ -135,23 +188,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
             color: #333;
             margin-bottom: 8px;
         }
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: <?php echo $color_principal; ?>;
+            box-shadow: 0 0 0 0.2rem rgba(<?php 
+                switch($usuario['rol']) {
+                    case 'admin': echo '220, 53, 69'; break; // Rojo
+                    case 'contador': echo '40, 167, 69'; break; // Verde
+                    case 'usuario': echo '52, 152, 219'; break; // Azul
+                    default: echo '108, 117, 125'; // Gris
+                }
+            ?>, 0.25);
+        }
         .user-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, <?php echo $color_principal; ?> 0%, #2c3e50 100%);
             color: white;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 25px;
         }
         .btn-guardar {
-            background: #28a745;
+            background: <?php echo $color_principal; ?>;
             color: white;
             border: none;
             padding: 12px 40px;
             border-radius: 10px;
             font-weight: 600;
+            transition: all 0.3s ease;
         }
         .btn-guardar:hover {
-            background: #218838;
+            background: <?php echo $color_hover; ?>;
             transform: scale(1.05);
         }
         .btn-volver {
@@ -161,6 +232,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
             padding: 12px 30px;
             border-radius: 10px;
             font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-volver:hover {
+            background: #5a6268;
+            transform: scale(1.05);
+        }
+        .password-note {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        .form-check-input:checked {
+            background-color: <?php echo $color_principal; ?>;
+            border-color: <?php echo $color_principal; ?>;
+        }
+        .icon-color {
+            color: <?php echo $color_principal; ?>;
         }
     </style>
 </head>
@@ -182,13 +270,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                             </div>
                             <div class="text-end">
                                 <span class="badge bg-light text-dark fs-6">
-                                    <?php 
-                                        switch($usuario['rol']) {
-                                            case 'admin': echo 'Administrador'; break;
-                                            case 'contador': echo 'Contador'; break;
-                                            case 'usuario': echo 'Contribuyente'; break;
-                                        }
-                                    ?>
+                                    <?php echo $rol_display; ?>
                                 </span>
                             </div>
                         </div>
@@ -267,6 +349,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                                 </select>
                             </div>
 
+                            <!-- Contraseña (opcional) -->
+                            <div class="col-md-6 mb-3">
+                                <label for="contrasena" class="form-label">Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Ingresa nueva contraseña">
+                                <div class="password-note">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Dejar en blanco para mantener la contraseña actual
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <!-- Estado -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Estado</label>
