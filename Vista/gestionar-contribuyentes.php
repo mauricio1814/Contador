@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar_asignacion'])
         
         if ($update_stmt->execute([$contribuyente_id])) {
             $success = "Contribuyente eliminado de tu lista de asignados exitosamente.";
-            // Recargar la lista de contribuyentes
+            // Actualizar la lista de contribuyentes inmediatamente
             $stmt_contribuyentes->execute([$contador_id]);
             $contribuyentes = $stmt_contribuyentes->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -95,24 +95,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar_asignacion'])
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 25px;
         }
-        .btn-primary-custom {
-            background: #3498db;
-            border-color: #3498db;
-            color: white;
-        }
-        .btn-primary-custom:hover {
-            background: #2980b9;
-            border-color: #2980b9;
-        }
-        .btn-success-custom {
-            background: #2ecc71;
-            border-color: #2ecc71;
-            color: white;
-        }
-        .btn-success-custom:hover {
-            background: #27ae60;
-            border-color: #27ae60;
-        }
         .btn-danger-custom {
             background: #e74c3c;
             border-color: #e74c3c;
@@ -135,13 +117,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar_asignacion'])
             background: #0056d2;
             transform: scale(1.05);
         }
-        .stats-badge {
-            background: linear-gradient(135deg, #3498db, #2c3e50);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
         .user-avatar {
             width: 50px;
             height: 50px;
@@ -154,19 +129,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar_asignacion'])
             font-weight: bold;
             font-size: 1.2rem;
         }
-        .btn-group-header {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+        
+        /* Animación para remover elementos */
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
         }
-        @media (max-width: 768px) {
-            .btn-group-header {
-                flex-direction: column;
-                width: 100%;
-            }
-            .btn-group-header .btn {
-                width: 100%;
-            }
+        
+        /* Prevenir problemas de modal */
+        body.modal-open {
+            overflow: auto !important;
+            padding-right: 0 !important;
         }
     </style>
 </head>
@@ -199,119 +172,260 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar_asignacion'])
 
         <!-- Mensajes -->
         <?php if ($error): ?>
-            <div class="alert alert-danger"><?php echo $error; ?></div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $error; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
         
         <?php if ($success): ?>
-            <div class="alert alert-success"><?php echo $success; ?></div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?php echo $success; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
 
         <!-- Lista de Contribuyentes -->
         <div class="gestion-card">
             <h4 class="mb-4">
                 <i class="fas fa-list me-2"></i>Contribuyentes Asignados
+                
             </h4>
 
-            <?php if (count($contribuyentes) > 0): ?>
-                <div class="row">
-                    <?php foreach ($contribuyentes as $contribuyente): ?>
-                        <div class="col-md-6 mb-3">
-                            <div class="user-card">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="user-avatar me-3">
-                                            <?php echo substr($contribuyente['nombre'], 0, 1) . substr($contribuyente['apellido'], 0, 1); ?>
+            <div id="listaContribuyentes">
+                <?php if (count($contribuyentes) > 0): ?>
+                    <div class="row">
+                        <?php foreach ($contribuyentes as $contribuyente): ?>
+                            <div class="col-md-6 mb-3" id="contribuyente-<?php echo $contribuyente['id_usuario']; ?>">
+                                <div class="user-card">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="user-avatar me-3">
+                                                <?php echo substr($contribuyente['nombre'], 0, 1) . substr($contribuyente['apellido'], 0, 1); ?>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-1"><?php echo htmlspecialchars($contribuyente['nombre'] . ' ' . $contribuyente['apellido']); ?></h6>
+                                                <span class="badge bg-success">Contribuyente</span>
+                                                <small class="text-muted d-block">ID: <?php echo $contribuyente['id_usuario']; ?></small>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h6 class="mb-1"><?php echo $contribuyente['nombre'] . ' ' . $contribuyente['apellido']; ?></h6>
-                                            <span class="badge bg-success">Contribuyente</span>
-                                            <small class="text-muted d-block">ID: <?php echo $contribuyente['id_usuario']; ?></small>
-                                        </div>
+                                        <span class="badge bg-<?php echo ($contribuyente['activo'] == 1) ? 'success' : 'secondary'; ?>">
+                                            <?php echo ($contribuyente['activo'] == 1) ? 'Activo' : 'Inactivo'; ?>
+                                        </span>
                                     </div>
-                                    <span class="badge bg-<?php echo ($contribuyente['activo'] == 1) ? 'success' : 'secondary'; ?>">
-                                        <?php echo ($contribuyente['activo'] == 1) ? 'Activo' : 'Inactivo'; ?>
-                                    </span>
-                                </div>
 
-                                <!-- Información del Contribuyente -->
-                                <div class="mb-3">
-                                    <p class="mb-1">
-                                        <i class="fas fa-envelope me-2 text-muted"></i>
-                                        <?php echo $contribuyente['correo']; ?>
-                                    </p>
-                                    <p class="mb-1">
-                                        <i class="fas fa-id-card me-2 text-muted"></i>
-                                        <?php echo $contribuyente['tipo_documento'] . ' ' . $contribuyente['numero_documento']; ?>
-                                    </p>
-                                    <?php if (!empty($contribuyente['telefono'])): ?>
-                                        <p class="mb-0">
-                                            <i class="fas fa-phone me-2 text-muted"></i>
-                                            <?php echo $contribuyente['telefono']; ?>
+                                    <!-- Información del Contribuyente -->
+                                    <div class="mb-3">
+                                        <p class="mb-1">
+                                            <i class="fas fa-envelope me-2 text-muted"></i>
+                                            <?php echo htmlspecialchars($contribuyente['correo']); ?>
                                         </p>
-                                    <?php endif; ?>
-                                </div>
+                                        <p class="mb-1">
+                                            <i class="fas fa-id-card me-2 text-muted"></i>
+                                            <?php echo htmlspecialchars($contribuyente['tipo_documento'] . ' ' . $contribuyente['numero_documento']); ?>
+                                        </p>
+                                        <?php if (!empty($contribuyente['telefono'])): ?>
+                                            <p class="mb-0">
+                                                <i class="fas fa-phone me-2 text-muted"></i>
+                                                <?php echo htmlspecialchars($contribuyente['telefono']); ?>
+                                            </p>
+                                        <?php endif; ?>
+                                    </div>
 
-                                <!-- Botones de Acción -->
-                                <div class="d-flex gap-2">
-                                    <a href="ver-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
-                                       class="btn btn-primary-custom btn-sm flex-fill">
-                                        <i class="fas fa-eye me-1"></i>Ver
-                                    </a>
-                                    <a href="editar-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
-                                       class="btn btn-success-custom btn-sm flex-fill">
-                                        <i class="fas fa-edit me-1"></i>Editar
-                                    </a>
-                                    <button type="button" class="btn btn-danger-custom btn-sm" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#modalEliminar<?php echo $contribuyente['id_usuario']; ?>">
-                                        <i class="fas fa-times me-1"></i>Eliminar
-                                    </button>
-                                </div>
-
-                                <!-- Modal de Confirmación para Eliminar -->
-                                <div class="modal fade" id="modalEliminar<?php echo $contribuyente['id_usuario']; ?>" tabindex="-1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Confirmar Eliminación</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>¿Estás seguro de que deseas eliminar a <strong><?php echo $contribuyente['nombre'] . ' ' . $contribuyente['apellido']; ?></strong> de tu lista de contribuyentes asignados?</p>
-                                                <p class="text-muted"><small>Esta acción solo elimina la asignación, el contribuyente permanecerá en el sistema.</small></p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <form method="POST" action="">
-                                                    <input type="hidden" name="contribuyente_id" value="<?php echo $contribuyente['id_usuario']; ?>">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                    <button type="submit" name="eliminar_asignacion" class="btn btn-danger-custom">Eliminar Asignación</button>
-                                                </form>
-                                            </div>
-                                        </div>
+                                    <!-- Botones de Acción -->
+                                    <div class="d-flex gap-2">
+                                        <a href="ver-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-eye me-1"></i>Ver
+                                        </a>
+                                        <a href="editar-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
+                                           class="btn btn-sm btn-outline-success">
+                                            <i class="fas fa-edit me-1"></i>Editar
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger btn-eliminar" 
+                                                data-id="<?php echo $contribuyente['id_usuario']; ?>"
+                                                data-nombre="<?php echo htmlspecialchars($contribuyente['nombre'] . ' ' . $contribuyente['apellido']); ?>">
+                                            <i class="fas fa-times me-1"></i>Eliminar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php else: ?>
-                <div class="text-center py-5">
-                    <i class="fas fa-users fa-4x text-muted mb-4"></i>
-                    <h4 class="text-muted">No tienes contribuyentes asignados</h4>
-                    <p class="text-muted">Puedes agregar nuevos contribuyentes usando el botón "Agregar Usuario".</p>
-                    <div class="d-flex gap-2 justify-content-center">
-                        <a href="perfil-contador.php" class="btn btn-outline-primary">
-                            <i class="fas fa-arrow-left me-2"></i>Volver al Perfil
-                        </a>
-                        <a href="registro-contribuyente.php" class="btn btn-agregar">
-                            <i class="fas fa-plus me-2"></i>Agregar Usuario
-                        </a>
+                        <?php endforeach; ?>
                     </div>
+                <?php else: ?>
+                    <div class="text-center py-5" id="sinContribuyentes">
+                        <i class="fas fa-users fa-4x text-muted mb-4"></i>
+                        <h4 class="text-muted">No tienes contribuyentes asignados</h4>
+                        <p class="text-muted">Puedes agregar nuevos contribuyentes usando el botón "Agregar Usuario".</p>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="registro-contribuyente.php" class="btn btn-agregar">
+                                <i class="fas fa-plus me-2"></i>Agregar Usuario
+                            </a>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal único para todas las eliminaciones -->
+    <div class="modal fade" id="modalEliminarGlobal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            <?php endif; ?>
+                <div class="modal-body">
+                    <p id="mensajeEliminacion">¿Estás seguro de que deseas eliminar a este contribuyente de tu lista de asignados?</p>
+                    <p class="text-muted"><small>Esta acción solo elimina la asignación, el contribuyente permanecerá en el sistema.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" action="" id="formEliminarGlobal">
+                        <input type="hidden" name="contribuyente_id" id="contribuyenteId" value="">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" name="eliminar_asignacion" class="btn btn-danger-custom" id="btnConfirmarEliminar">
+                            <i class="fas fa-trash me-1"></i>Eliminar Asignación
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Variables globales
+        let contribuyenteAEliminar = null;
+        const modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminarGlobal'));
+
+        // Configurar event listeners para botones de eliminar
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar botones de eliminar
+            document.querySelectorAll('.btn-eliminar').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const nombre = this.getAttribute('data-nombre');
+                    abrirModalEliminacion(id, nombre);
+                });
+            });
+
+            // Configurar envío del formulario
+            document.getElementById('formEliminarGlobal').addEventListener('submit', function(e) {
+                e.preventDefault();
+                eliminarContribuyente();
+            });
+
+            // Limpiar estado al cerrar el modal
+            document.getElementById('modalEliminarGlobal').addEventListener('hidden.bs.modal', function() {
+                contribuyenteAEliminar = null;
+                document.getElementById('contribuyenteId').value = '';
+                document.getElementById('btnConfirmarEliminar').disabled = false;
+                document.getElementById('btnConfirmarEliminar').innerHTML = '<i class="fas fa-trash me-1"></i>Eliminar Asignación';
+            });
+        });
+
+        function abrirModalEliminacion(id, nombre) {
+            contribuyenteAEliminar = { id: id, nombre: nombre };
+            document.getElementById('contribuyenteId').value = id;
+            document.getElementById('mensajeEliminacion').innerHTML = 
+                '¿Estás seguro de que deseas eliminar a <strong>' + nombre + '</strong> de tu lista de contribuyentes asignados?';
+            modalEliminar.show();
+        }
+
+        function eliminarContribuyente() {
+            if (!contribuyenteAEliminar) return;
+
+            const btnConfirmar = document.getElementById('btnConfirmarEliminar');
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Eliminando...';
+
+            // Crear FormData para enviar el formulario
+            const formData = new FormData();
+            formData.append('contribuyente_id', contribuyenteAEliminar.id);
+            formData.append('eliminar_asignacion', 'true');
+
+            fetch('', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(html => {
+                // Crear un documento temporal para parsear la respuesta
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                
+                // Extraer la nueva lista de contribuyentes
+                const nuevaLista = doc.getElementById('listaContribuyentes');
+                const nuevoContador = doc.getElementById('contadorContribuyentes');
+                
+                if (nuevaLista) {
+                    // Actualizar la lista con animación
+                    const elementoAEliminar = document.getElementById('contribuyente-' + contribuyenteAEliminar.id);
+                    if (elementoAEliminar) {
+                        elementoAEliminar.classList.add('fade-out');
+                        setTimeout(() => {
+                            document.getElementById('listaContribuyentes').innerHTML = nuevaLista.innerHTML;
+                            if (nuevoContador) {
+                                document.getElementById('contadorContribuyentes').textContent = nuevoContador.textContent;
+                            }
+                            reconfigurarEventListeners();
+                            mostrarMensajeExito();
+                        }, 300);
+                    }
+                }
+                
+                modalEliminar.hide();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al eliminar el contribuyente. Por favor, intenta nuevamente.');
+                btnConfirmar.disabled = false;
+                btnConfirmar.innerHTML = '<i class="fas fa-trash me-1"></i>Eliminar Asignación';
+            });
+        }
+
+        function reconfigurarEventListeners() {
+            // Reconfigurar los event listeners para los nuevos botones
+            document.querySelectorAll('.btn-eliminar').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const nombre = this.getAttribute('data-nombre');
+                    abrirModalEliminacion(id, nombre);
+                });
+            });
+        }
+
+        function mostrarMensajeExito() {
+            // Crear y mostrar mensaje de éxito
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                Contribuyente eliminado de tu lista de asignados exitosamente.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            // Insertar después del header
+            const header = document.querySelector('.header-gestion');
+            header.parentNode.insertBefore(alertDiv, header.nextSibling);
+            
+            // Auto-eliminar después de 5 segundos
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Limpiar estado inicial de modales
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(backdrop => backdrop.remove());
+        });
+    </script>
 </body>
 </html>

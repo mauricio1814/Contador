@@ -250,11 +250,14 @@ if (!$contador) {
                             Contador
                         </div>
                         
+                        <!--
                         <div class="d-grid">
                             <a href="contactar-contador.php" class="btn btn-usuario">
                                 <i class="fas fa-envelope me-2"></i>Contactar Contador
                             </a>
                         </div>
+                        -->
+
                     <?php else: ?>
                         <div class="text-center py-4">
                             <i class="fas fa-user-tie fa-3x text-muted mb-3"></i>

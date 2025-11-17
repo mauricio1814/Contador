@@ -4,6 +4,7 @@ include_once '../includes/session.php';
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,13 +18,16 @@ include_once '../includes/session.php';
             border-bottom: 1px solid #dee2e6;
             padding: 0.7rem 3rem;
         }
+
         .navbar-brand {
             font-weight: bold;
             color: #0d6efd !important;
         }
+
         .nav-item {
             margin-right: 10px;
         }
+
         .user-name {
             cursor: pointer;
             padding: 8px 15px;
@@ -32,12 +36,14 @@ include_once '../includes/session.php';
             color: #0d6efd;
             font-weight: 500;
         }
+
         .user-name:hover {
             background-color: #f8f9fa;
             color: #0056d2;
         }
     </style>
 </head>
+
 <body>
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-custom">
@@ -54,32 +60,32 @@ include_once '../includes/session.php';
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="nav nav-pills">
                     <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'principal.php' ? 'active' : ''; ?>" 
-                           href="principal.php">Inicio</a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'principal.php' ? 'active' : ''; ?>"
+                            href="principal.php"><i class="fas fa-home"></i> Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'declarar.php' ? 'active' : ''; ?>" 
-                           href="declarar.php">Declarar Renta</a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'declarar.php' ? 'active' : ''; ?>"
+                            href="declarar.php"><i class="fas fa-file"></i> Declarar Renta</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'historial.php' ? 'active' : ''; ?>" 
-                           href="historial.php">Historial</a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'historial.php' ? 'active' : ''; ?>"
+                            href="historial.php"><i class="fas fa-history"></i> Historial</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'guias.php' ? 'active' : ''; ?>" 
-                           href="guias.php">Guías</a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'guias.php' ? 'active' : ''; ?>"
+                            href="guias.php"><i class="fas fa-book"></i> Guías</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'soporte.php' ? 'active' : ''; ?>" 
-                           href="soporte.php">Soporte</a>
+                        <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'soporte.php' ? 'active' : ''; ?>"
+                            href="soporte.php"><i class="fas fa-life-ring"></i> Soporte</a>
                     </li>
-                    
+
                     <?php if (isLoggedIn()): ?>
                         <li class="nav-item">
-                            <span class="user-name" onclick="redirectToProfile()">
+                            <a class="user-name nav-link" onclick="redirectToProfile()">
                                 <i class="fas fa-user me-1"></i>
                                 <?php echo $_SESSION['user_nombre']; ?>
-                            </span>
+                            </a>
                         </li>
                     <?php else: ?>
                         <li class="nav-item">
@@ -110,7 +116,7 @@ include_once '../includes/session.php';
         document.addEventListener('DOMContentLoaded', function() {
             const currentPage = window.location.pathname.split("/").pop();
             const navLinks = document.querySelectorAll(".nav-link");
-            
+
             navLinks.forEach(link => {
                 const linkPage = link.getAttribute("href");
                 if (linkPage === currentPage) {
@@ -124,4 +130,5 @@ include_once '../includes/session.php';
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

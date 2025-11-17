@@ -1,4 +1,4 @@
-success<?php
+<?php
 include_once '../config/database.php';
 include_once '../includes/session.php';
 
