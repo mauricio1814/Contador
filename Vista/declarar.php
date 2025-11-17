@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +22,7 @@
             <h1 class="fw-bold text-primary mb-0 text-center">
                 <i class="fa-solid fa-file-invoice-dollar"></i> Declarar Renta
             </h1>
-        </div>>
+        </div>
         <div class="row mt-5">
             <div class="col-md-6 text-center">
                 <label for="fecha" class="form-label fw-semibold">Fecha</label>

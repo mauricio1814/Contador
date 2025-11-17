@@ -159,9 +159,9 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
             <div class="col-md-6">
                 <div class="admin-card">
                     <h4 class="mb-3"><i class="fas fa-chart-bar me-2"></i>Reportes</h4>
-                    <p>Generar reportes del sistema</p>
+                    <p>Reportes del sistema</p>
                     <button class="btn btn-admin" onclick="alert('Funcionalidad en desarrollo')">
-                        <i class="fas fa-download me-2"></i>Generar Reporte
+                        <i class="fas fa-download me-2"></i>Ver Reporte
                     </button>
                 </div>
             </div>

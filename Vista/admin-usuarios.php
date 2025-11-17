@@ -326,7 +326,7 @@ if (isset($_SESSION['error'])) {
             </div>
         <?php endif; ?>
 
-        <!-- HEADER COMO EN LA CAPTURA -->
+        
         <div class="page-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -378,7 +378,7 @@ if (isset($_SESSION['error'])) {
 
         <!-- Contenido de Pestañas -->
         <div class="tab-content" id="userTabsContent">
-            <!-- Pestaña Todos los Usuarios -->
+            <!-- Usuarios -->
             <div class="tab-pane fade show active" id="todos" role="tabpanel" aria-labelledby="todos-tab">
                 <div class="row">
                     <?php if (empty($usuarios)): ?>
@@ -465,7 +465,7 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
 
-            <!-- Pestaña Contribuyentes -->
+            <!-- Contribuyentes -->
             <div class="tab-pane fade" id="contribuyentes" role="tabpanel" aria-labelledby="contribuyentes-tab">
                 <div class="row">
                     <?php if (empty($contribuyentes)): ?>
@@ -540,7 +540,7 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
 
-            <!-- Pestaña Contadores -->
+            <!-- Contadores -->
             <div class="tab-pane fade" id="contadores" role="tabpanel" aria-labelledby="contadores-tab">
                 <div class="row">
                     <?php if (empty($contadores)): ?>
@@ -603,7 +603,7 @@ if (isset($_SESSION['error'])) {
                 </div>
             </div>
 
-            <!-- Pestaña Administradores -->
+            <!-- Administradores -->
             <div class="tab-pane fade" id="admins" role="tabpanel" aria-labelledby="admins-tab">
                 <div class="row">
                     <?php if (empty($admins)): ?>
