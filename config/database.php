@@ -1,7 +1,7 @@
 <?php
 class Database {
-    private $host = "127.0.0.1:3307";
-    private $db_name = "renta_segura";
+    private $host = "127.0.0.1:3306";
+    private $db_name = "proyecto";
     private $username = "root";
     private $password = "";
     public $conn;
