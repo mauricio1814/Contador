@@ -232,9 +232,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['eliminar_asignacion'])
                                         <?php endif; ?>
                                     </div>
 
-                                    <!-- Botones de Acción -->
+                                    <!-- En la sección de Botones de Acción, cambiar: -->
                                     <div class="d-flex gap-2">
-                                        <a href="ver-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
+                                        <a href="ver-documentos.php?id_usuario=<?php echo $contribuyente['id_usuario']; ?>" 
                                            class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-eye me-1"></i>Ver
                                         </a>

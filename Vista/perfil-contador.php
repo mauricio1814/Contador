@@ -234,13 +234,14 @@ $total_contribuyentes = count($contribuyentes);
                                             <?php echo ($contribuyente['activo'] == 1) ? 'Activo' : 'Inactivo'; ?>
                                         </span>
                                     </div>
+                                    <!-- En la sección de Contribuyentes Asignados, cambiar: -->
                                     <div class="mt-2">
-                                        <a href="ver-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
-                                           class="btn btn-sm btn-outline-primary">
+                                        <a href="ver-documentos.php?id_usuario=<?php echo $contribuyente['id_usuario']; ?>" 
+                                        class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-eye me-1"></i>Ver
                                         </a>
                                         <a href="editar-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
-                                           class="btn btn-sm btn-outline-success">
+                                        class="btn btn-sm btn-outline-success">
                                             <i class="fas fa-edit me-1"></i>Editar
                                         </a>
                                     </div>                                    
