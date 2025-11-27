@@ -61,33 +61,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
         $check_query = "SELECT id_usuario FROM usuario WHERE correo = ? AND id_usuario != ?";
         $check_stmt = $db->prepare($check_query);
         $check_stmt->execute([$correo, $user_id]);
-        
+
         if ($check_stmt->rowCount() > 0) {
             $error = "El correo electrónico ya está registrado por otro usuario.";
         } else {
             // Construir la consulta UPDATE dinámicamente
             $query = "UPDATE usuario 
                      SET nombre = ?, apellido = ?, correo = ?, telefono = ?";
-            
+
             $params = [$nombre, $apellido, $correo, $telefono];
-            
+
             // Si se proporcionó una nueva contraseña, actualizarla
             if (!empty($nueva_contrasena)) {
                 $query .= ", contrasena = ?";
                 $params[] = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
             }
-            
+
             $query .= " WHERE id_usuario = ?";
             $params[] = $user_id;
-            
+
             $stmt = $db->prepare($query);
-            
+
             if ($stmt->execute($params)) {
                 $success = "Perfil actualizado exitosamente.";
                 if (!empty($nueva_contrasena)) {
                     $success .= " La contraseña ha sido actualizada.";
                 }
-                
+
                 // Actualizar la información en la variable y sesión
                 $usuario = array_merge($usuario, [
                     'nombre' => $nombre,
@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                     'correo' => $correo,
                     'telefono' => $telefono,
                 ]);
-                
+
                 // Actualizar datos en sesión
                 $_SESSION['user_nombre'] = $nombre;
                 $_SESSION['user_apellido'] = $apellido;
@@ -110,6 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,32 +121,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
         .editar-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
             max-width: 800px;
             margin: 0 auto;
         }
+
         .form-label {
             font-weight: 600;
             color: #333;
             margin-bottom: 8px;
         }
+
         .form-control {
             border-radius: 8px;
             border: 2px solid #e9ecef;
             padding: 10px 15px;
             transition: all 0.3s ease;
         }
+
         .form-control:focus {
             border-color: <?php echo $color_principal; ?>;
-            box-shadow: 0 0 0 0.2rem rgba(<?php 
-                if ($user_rol === 'contador') {
-                    echo '40, 167, 69'; // Verde
-                } else {
-                    echo '52, 152, 219'; // Azul
-                }
-            ?>, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(<?php
+                                            if ($user_rol === 'contador') {
+                                                echo '40, 167, 69'; // Verde
+                                            } else {
+                                                echo '52, 152, 219'; // Azul
+                                            }
+                                            ?>, 0.25);
         }
+
         .user-header {
             background: linear-gradient(135deg, <?php echo $color_principal; ?> 0%, #2c3e50 100%);
             color: white;
@@ -153,6 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
             padding: 20px;
             margin-bottom: 25px;
         }
+
         .btn-guardar {
             background: <?php echo $color_principal; ?>;
             color: white;
@@ -162,10 +168,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-guardar:hover {
             background: <?php echo $color_hover; ?>;
             transform: scale(1.05);
         }
+
         .btn-volver {
             background: #6c757d;
             color: white;
@@ -175,20 +183,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-volver:hover {
             background: #5a6268;
             transform: scale(1.05);
         }
+
         .field-disabled {
             background-color: #e9ecef;
             opacity: 1;
             cursor: not-allowed;
         }
+
         .password-note {
             font-size: 0.85rem;
             color: #6c757d;
             margin-top: 5px;
         }
+
         .info-section {
             background: #f8f9fa;
             border-radius: 10px;
@@ -196,11 +208,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
             margin-bottom: 20px;
             border-left: 4px solid <?php echo $color_principal; ?>;
         }
+
         .icon-color {
             color: <?php echo $color_principal; ?>;
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
@@ -226,12 +240,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                     </div>
 
                     <!-- Mensajes -->
-                    <?php if ($error): ?>
-                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php if (!empty($error)): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "¡Error!",
+                                    text: "<?php echo $error; ?>",
+                                    confirmButtonColor: "#d33",
+                                    background: "#fff",
+                                    color: "#000"
+                                });
+                            });
+                        </script>
                     <?php endif; ?>
-                    
-                    <?php if ($success): ?>
-                        <div class="alert alert-success"><?php echo $success; ?></div>
+
+                    <?php if (!empty($success)): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "¡Usuario Actalizado!",
+                                    text: "<?php echo $success; ?>",
+                                    confirmButtonColor: "#0d6efd"
+                                });
+                            });
+                        </script>
                     <?php endif; ?>
 
                     <!-- Formulario -->
@@ -244,17 +278,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">ID Usuario</label>
-                                    <input type="text" class="form-control field-disabled" 
-                                           value="<?php echo htmlspecialchars($usuario['id_usuario']); ?>" 
-                                           readonly disabled>
+                                    <input type="text" class="form-control field-disabled"
+                                        value="<?php echo htmlspecialchars($usuario['id_usuario']); ?>"
+                                        readonly disabled>
                                     <small class="text-muted">No editable</small>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Tipo Documento</label>
-                                    <input type="text" class="form-control field-disabled" 
-                                           value="<?php echo htmlspecialchars($usuario['tipo_documento']); ?>" 
-                                           readonly disabled>
+                                    <input type="text" class="form-control field-disabled"
+                                        value="<?php echo htmlspecialchars($usuario['tipo_documento']); ?>"
+                                        readonly disabled>
                                     <small class="text-muted">No editable</small>
                                 </div>
                             </div>
@@ -262,16 +296,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Número Documento</label>
-                                    <input type="text" class="form-control field-disabled" 
-                                           value="<?php echo htmlspecialchars($usuario['numero_documento']); ?>" 
-                                           readonly disabled>
+                                    <input type="text" class="form-control field-disabled"
+                                        value="<?php echo htmlspecialchars($usuario['numero_documento']); ?>"
+                                        readonly disabled>
                                     <small class="text-muted">No editable</small>
                                 </div>
 
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Rol</label>
-                                    <input type="text" class="form-control field-disabled" 
-                                           value="<?php echo $rol_display; ?>" readonly disabled>
+                                    <input type="text" class="form-control field-disabled"
+                                        value="<?php echo $rol_display; ?>" readonly disabled>
                                     <small class="text-muted">No editable</small>
                                 </div>
                             </div>
@@ -287,15 +321,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                                 <!-- Nombre -->
                                 <div class="col-md-6 mb-3">
                                     <label for="nombre" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" 
-                                           value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
+                                    <input type="text" class="form-control solo-letras" id="nombre" name="nombre"
+                                        value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
                                 </div>
 
                                 <!-- Apellido -->
                                 <div class="col-md-6 mb-3">
                                     <label for="apellido" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" id="apellido" name="apellido"
-                                           value="<?php echo htmlspecialchars($usuario['apellido']); ?>" required>
+                                    <input type="text" class="form-control solo-letras" id="apellido" name="apellido"
+                                        value="<?php echo htmlspecialchars($usuario['apellido']); ?>" required>
                                 </div>
                             </div>
 
@@ -303,15 +337,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                                 <!-- Correo -->
                                 <div class="col-md-6 mb-3">
                                     <label for="correo" class="form-label">Correo Electrónico</label>
-                                    <input type="email" class="form-control" id="correo" name="correo"
-                                           value="<?php echo htmlspecialchars($usuario['correo']); ?>" required>
+                                    <input type="email" class="form-control correo" id="correo" name="correo"
+                                        value="<?php echo htmlspecialchars($usuario['correo']); ?>" required>
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="col-md-6 mb-3">
                                     <label for="telefono" class="form-label">Teléfono</label>
-                                    <input type="tel" class="form-control" id="telefono" name="telefono"
-                                           value="<?php echo htmlspecialchars($usuario['telefono'] ?? ''); ?>">
+                                    <input type="tel" class="form-control solo-numeros" id="telefono" name="telefono"
+                                        value="<?php echo htmlspecialchars($usuario['telefono'] ?? ''); ?>">
                                 </div>
                             </div>
 
@@ -319,8 +353,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
                                 <!-- Contraseña (opcional) -->
                                 <div class="col-12 mb-3">
                                     <label for="contrasena" class="form-label">Nueva Contraseña</label>
-                                    <input type="password" class="form-control" id="contrasena" name="contrasena" 
-                                           placeholder="Ingresa nueva contraseña">
+                                    <input type="password" class="form-control" id="contrasena" name="contrasena"
+                                        placeholder="Ingresa nueva contraseña">
                                     <div class="password-note">
                                         <i class="fas fa-info-circle me-1"></i>
                                         Dejar en blanco para mantener la contraseña actual
@@ -345,7 +379,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_perfil'])) 
             </div>
         </div>
     </div>
-
+    <script src="../JS/validaciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
+
 </html>

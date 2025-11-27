@@ -44,7 +44,7 @@ $stmt_contadores->execute();
 $contadores = $stmt_contadores->fetchAll(PDO::FETCH_ASSOC);
 
 // Definir colores según el rol del usuario que se está editando
-switch($usuario['rol']) {
+switch ($usuario['rol']) {
     case 'admin':
         $color_principal = '#dc3545'; // ROJO para admin
         $color_hover = '#c82333';
@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
         $check_stmt->bindParam(":correo", $correo);
         $check_stmt->bindParam(":id_usuario", $usuario_id);
         $check_stmt->execute();
-        
+
         if ($check_stmt->rowCount() > 0) {
             $error = "El correo electrónico ya está registrado por otro usuario.";
         } else {
@@ -103,19 +103,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                 $check_doc_stmt->bindParam(":numero_documento", $numero_documento);
                 $check_doc_stmt->bindParam(":id", $usuario_id);
                 $check_doc_stmt->execute();
-                
+
                 if ($check_doc_stmt->rowCount() > 0) {
                     $error = "El número de documento ya está registrado por otro usuario.";
                 }
             }
-            
+
             if (empty($error)) {
                 // Construir la consulta UPDATE dinámicamente
                 $query = "UPDATE usuario 
                          SET nombre = :nombre, apellido = :apellido, tipo_documento = :tipo_documento, 
                              numero_documento = :numero_documento, correo = :correo, telefono = :telefono,
                              rol = :rol, activo = :activo, contador_asignado = :contador_asignado";
-                
+
                 $params = [
                     ":nombre" => $nombre,
                     ":apellido" => $apellido,
@@ -128,23 +128,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                     ":contador_asignado" => $contador_asignado,
                     ":id_usuario" => $usuario_id
                 ];
-                
+
                 // Si se proporcionó una nueva contraseña, actualizarla
                 if (!empty($nueva_contrasena)) {
                     $query .= ", contrasena = :contrasena";
                     $params[":contrasena"] = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
                 }
-                
+
                 $query .= " WHERE id_usuario = :id_usuario";
-                
+
                 $stmt = $db->prepare($query);
-                
+
                 if ($stmt->execute($params)) {
                     $success = "Usuario actualizado exitosamente.";
                     if (!empty($nueva_contrasena)) {
                         $success .= " La contraseña ha sido actualizada.";
                     }
-                    
+
                     // Actualizar la información del usuario en la variable
                     $usuario = array_merge($usuario, [
                         'nombre' => $nombre,
@@ -168,6 +168,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -178,33 +179,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
         .editar-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
             max-width: 800px;
             margin: 0 auto;
         }
+
         .form-label {
             font-weight: 600;
             color: #333;
             margin-bottom: 8px;
         }
+
         .form-control {
             border-radius: 8px;
             border: 2px solid #e9ecef;
             padding: 10px 15px;
             transition: all 0.3s ease;
         }
+
         .form-control:focus {
             border-color: <?php echo $color_principal; ?>;
-            box-shadow: 0 0 0 0.2rem rgba(<?php 
-                switch($usuario['rol']) {
-                    case 'admin': echo '220, 53, 69'; break; // Rojo
-                    case 'contador': echo '40, 167, 69'; break; // Verde
-                    case 'usuario': echo '52, 152, 219'; break; // Azul
-                    default: echo '108, 117, 125'; // Gris
-                }
-            ?>, 0.25);
+            box-shadow: 0 0 0 0.2rem rgba(<?php
+                                            switch ($usuario['rol']) {
+                                                case 'admin':
+                                                    echo '220, 53, 69';
+                                                    break; // Rojo
+                                                case 'contador':
+                                                    echo '40, 167, 69';
+                                                    break; // Verde
+                                                case 'usuario':
+                                                    echo '52, 152, 219';
+                                                    break; // Azul
+                                                default:
+                                                    echo '108, 117, 125'; // Gris
+                                            }
+                                            ?>, 0.25);
         }
+
         .user-header {
             background: linear-gradient(135deg, <?php echo $color_principal; ?> 0%, #2c3e50 100%);
             color: white;
@@ -212,6 +224,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
             padding: 20px;
             margin-bottom: 25px;
         }
+
         .btn-guardar {
             background: <?php echo $color_principal; ?>;
             color: white;
@@ -221,10 +234,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-guardar:hover {
             background: <?php echo $color_hover; ?>;
             transform: scale(1.05);
         }
+
         .btn-volver {
             background: #6c757d;
             color: white;
@@ -234,24 +249,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-volver:hover {
             background: #5a6268;
             transform: scale(1.05);
         }
+
         .password-note {
             font-size: 0.85rem;
             color: #6c757d;
             margin-top: 5px;
         }
+
         .form-check-input:checked {
             background-color: <?php echo $color_principal; ?>;
             border-color: <?php echo $color_principal; ?>;
         }
+
         .icon-color {
             color: <?php echo $color_principal; ?>;
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
@@ -277,12 +297,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                     </div>
 
                     <!-- Mensajes -->
-                    <?php if ($error): ?>
-                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php if (!empty($error)): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "¡Error!",
+                                    text: "<?php echo $error; ?>",
+                                    confirmButtonColor: "#d33",
+                                    background: "#fff",
+                                    color: "#000"
+                                });
+                            });
+                        </script>
                     <?php endif; ?>
-                    
-                    <?php if ($success): ?>
-                        <div class="alert alert-success"><?php echo $success; ?></div>
+
+                    <?php if (!empty($success)): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "¡Usuario Actualizado!",
+                                    text: "<?php echo $success; ?>",
+                                    confirmButtonColor: "#0d6efd"
+                                });
+                            });
+                        </script>
                     <?php endif; ?>
 
                     <!-- Formulario -->
@@ -291,15 +331,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                             <!-- Nombre -->
                             <div class="col-md-6 mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" 
-                                       value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
+                                <input type="text" class="form-control solo-letras" id="nombre" name="nombre"
+                                    value="<?php echo htmlspecialchars($usuario['nombre']); ?>" required>
                             </div>
 
                             <!-- Apellido -->
                             <div class="col-md-6 mb-3">
                                 <label for="apellido" class="form-label">Apellido</label>
-                                <input type="text" class="form-control" id="apellido" name="apellido"
-                                       value="<?php echo htmlspecialchars($usuario['apellido']); ?>" required>
+                                <input type="text" class="form-control solo-letras" id="apellido" name="apellido"
+                                    value="<?php echo htmlspecialchars($usuario['apellido']); ?>" required>
                             </div>
                         </div>
 
@@ -317,8 +357,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
 
                             <div class="col-md-6 mb-3">
                                 <label for="numero_documento" class="form-label">No. documento</label>
-                                <input type="text" class="form-control" id="numero_documento" name="numero_documento"
-                                       value="<?php echo htmlspecialchars($usuario['numero_documento']); ?>" required>
+                                <input type="text" class="form-control solo-numeros" id="numero_documento" name="numero_documento"
+                                    value="<?php echo htmlspecialchars($usuario['numero_documento']); ?>" required>
                             </div>
                         </div>
 
@@ -326,15 +366,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                             <!-- Correo -->
                             <div class="col-md-6 mb-3">
                                 <label for="correo" class="form-label">Correo</label>
-                                <input type="email" class="form-control" id="correo" name="correo"
-                                       value="<?php echo htmlspecialchars($usuario['correo']); ?>" required>
+                                <input type="email" class="form-control correo" id="correo" name="correo"
+                                    value="<?php echo htmlspecialchars($usuario['correo']); ?>" required>
                             </div>
 
                             <!-- Teléfono -->
                             <div class="col-md-6 mb-3">
                                 <label for="telefono" class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" id="telefono" name="telefono"
-                                       value="<?php echo htmlspecialchars($usuario['telefono']); ?>">
+                                <input type="tel" class="form-control solo-numeros" id="telefono" name="telefono"
+                                    value="<?php echo htmlspecialchars($usuario['telefono']); ?>">
                             </div>
                         </div>
 
@@ -365,8 +405,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Estado</label>
                                 <div class="form-check form-switch mt-2">
-                                    <input class="form-check-input" type="checkbox" id="activo" name="activo" 
-                                           <?php echo $usuario['activo'] ? 'checked' : ''; ?>>
+                                    <input class="form-check-input" type="checkbox" id="activo" name="activo"
+                                        <?php echo $usuario['activo'] ? 'checked' : ''; ?>>
                                     <label class="form-check-label" for="activo">
                                         Usuario activo
                                     </label>
@@ -412,7 +452,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
         function toggleContadorField() {
             const rol = document.getElementById('rol').value;
             const contadorField = document.getElementById('contador-field');
-            
+
             if (rol === 'usuario') {
                 contadorField.style.display = 'block';
             } else {
@@ -420,7 +460,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar_usuario']))
             }
         }
     </script>
-
+    <script src="../JS/validaciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
+
 </html>

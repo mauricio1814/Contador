@@ -24,6 +24,7 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,27 +41,33 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
             border-radius: 5px;
             margin-top: 10px;
         }
+
         .declaracion-detalle {
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         .declaracion-detalle:hover {
             background-color: #f8f9fa;
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
     <main class="bg-light min-vh-100">
         <div class="container">
-            <h1 class="page-title"><i class="fa-solid fa-clock-rotate-left me-2"></i>Historial de Declaraciones</h1>
+            <div class="card p-4 mt-4">
+            <h1 class="page-title text-center fw-bold mt-2">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i>Historial de Declaraciones</h1>
+                <p class="text-muted text-center">Las declaraciones aparecerán aquí una vez que sean cerradas por tu contador.</p>
 
             <?php if (empty($declaraciones)): ?>
-                <div class="card text-center py-5">
+                <div class="text-center py-5">
                     <i class="fa-solid fa-folder-open fa-3x text-muted mb-3"></i>
                     <h4 class="text-muted">No hay declaraciones en el historial</h4>
-                    <p class="text-muted">Las declaraciones aparecerán aquí una vez que sean cerradas por tu contador.</p>
+                    
                 </div>
             <?php else: ?>
                 <div class="card border-0 overflow-hidden">
@@ -77,79 +84,80 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
                             </thead>
                             <tbody>
                                 <?php foreach ($declaraciones as $declaracion): ?>
-                                <tr class="declaracion-detalle" 
-                                    data-bs-toggle="collapse" 
-                                    data-bs-target="#detalle-<?php echo $declaracion['id_declaracion']; ?>">
-                                    <td class="fw-semibold"><?php echo $declaracion['anio_fiscal']; ?></td>
-                                    <td>
-                                        <span class="badge bg-success">Cerrada</span>
-                                    </td>
-                                    <td><?php echo $declaracion['total_documentos']; ?> documento(s)</td>
-                                    <td><?php echo date('d/m/Y', strtotime($declaracion['fecha_cierre'])); ?></td>
-                                    <td>
-                                        <button class="btn btn-outline-primary btn-sm">
-                                            <i class="fa-solid fa-eye me-1"></i>Ver Detalles
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="p-0 border-0">
-                                        <div class="collapse" id="detalle-<?php echo $declaracion['id_declaracion']; ?>">
-                                            <div class="p-3 bg-light">
-                                                <!-- Observaciones del contador -->
-                                                <?php if (!empty($declaracion['observaciones_finales'])): ?>
-                                                <div class="mb-3">
-                                                    <h6><i class="fa-solid fa-comment me-2 text-primary"></i>Observaciones del Contador</h6>
-                                                    <div class="observaciones-box">
-                                                        <?php echo nl2br(htmlspecialchars($declaracion['observaciones_finales'])); ?>
-                                                    </div>
-                                                </div>
-                                                <?php endif; ?>
-                                                
-                                                <!-- Lista de documentos -->
-                                                <div>
-                                                    <h6><i class="fa-solid fa-files me-2 text-primary"></i>Documentos Incluidos</h6>
-                                                    <?php
-                                                    $sql_docs = "SELECT * FROM documentos_soporte 
-                                                                WHERE id_declaracion = ? 
-                                                                ORDER BY tipo_documento";
-                                                    $stmt_docs = $db->prepare($sql_docs);
-                                                    $stmt_docs->execute([$declaracion['id_declaracion']]);
-                                                    $documentos = $stmt_docs->fetchAll(PDO::FETCH_ASSOC);
-                                                    ?>
-                                                    
-                                                    <?php if (!empty($documentos)): ?>
-                                                        <div class="row">
-                                                            <?php foreach ($documentos as $doc): ?>
-                                                            <div class="col-md-6 mb-2">
-                                                                <div class="d-flex align-items-center p-2 bg-white rounded">
-                                                                    <i class="fa-solid fa-file-pdf text-danger me-2"></i>
-                                                                    <div class="flex-grow-1">
-                                                                        <small class="fw-semibold"><?php echo htmlspecialchars($doc['nombre_original']); ?></small><br>
-                                                                        <small class="text-muted"><?php echo htmlspecialchars($doc['tipo_documento']); ?></small>
-                                                                    </div>
-                                                                    <a href="<?php echo htmlspecialchars($doc['urldocumento']); ?>" 
-                                                                       class="btn btn-sm btn-outline-success" 
-                                                                       target="_blank"
-                                                                       download>
-                                                                        <i class="fa-solid fa-download"></i>
-                                                                    </a>
-                                                                </div>
+                                    <tr class="declaracion-detalle"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#detalle-<?php echo $declaracion['id_declaracion']; ?>">
+                                        <td class="fw-semibold"><?php echo $declaracion['anio_fiscal']; ?></td>
+                                        <td>
+                                            <span class="badge bg-success">Cerrada</span>
+                                        </td>
+                                        <td><?php echo $declaracion['total_documentos']; ?> documento(s)</td>
+                                        <td><?php echo date('d/m/Y', strtotime($declaracion['fecha_cierre'])); ?></td>
+                                        <td>
+                                            <button class="btn btn-outline-primary btn-sm">
+                                                <i class="fa-solid fa-eye me-1"></i>Ver Detalles
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="5" class="p-0 border-0">
+                                            <div class="collapse" id="detalle-<?php echo $declaracion['id_declaracion']; ?>">
+                                                <div class="p-3 bg-light">
+                                                    <!-- Observaciones del contador -->
+                                                    <?php if (!empty($declaracion['observaciones_finales'])): ?>
+                                                        <div class="mb-3">
+                                                            <h6><i class="fa-solid fa-comment me-2 text-primary"></i>Observaciones del Contador</h6>
+                                                            <div class="observaciones-box">
+                                                                <?php echo nl2br(htmlspecialchars($declaracion['observaciones_finales'])); ?>
                                                             </div>
-                                                            <?php endforeach; ?>
                                                         </div>
                                                     <?php endif; ?>
+
+                                                    <!-- Lista de documentos -->
+                                                    <div>
+                                                        <h6><i class="fa-solid fa-files me-2 text-primary"></i>Documentos Incluidos</h6>
+                                                        <?php
+                                                        $sql_docs = "SELECT * FROM documentos_soporte 
+                                                                WHERE id_declaracion = ? 
+                                                                ORDER BY tipo_documento";
+                                                        $stmt_docs = $db->prepare($sql_docs);
+                                                        $stmt_docs->execute([$declaracion['id_declaracion']]);
+                                                        $documentos = $stmt_docs->fetchAll(PDO::FETCH_ASSOC);
+                                                        ?>
+
+                                                        <?php if (!empty($documentos)): ?>
+                                                            <div class="row">
+                                                                <?php foreach ($documentos as $doc): ?>
+                                                                    <div class="col-md-6 mb-2">
+                                                                        <div class="d-flex align-items-center p-2 bg-white rounded">
+                                                                            <i class="fa-solid fa-file-pdf text-danger me-2"></i>
+                                                                            <div class="flex-grow-1">
+                                                                                <small class="fw-semibold"><?php echo htmlspecialchars($doc['nombre_original']); ?></small><br>
+                                                                                <small class="text-muted"><?php echo htmlspecialchars($doc['tipo_documento']); ?></small>
+                                                                            </div>
+                                                                            <a href="<?php echo htmlspecialchars($doc['urldocumento']); ?>"
+                                                                                class="btn btn-sm btn-outline-success"
+                                                                                target="_blank"
+                                                                                download>
+                                                                                <i class="fa-solid fa-download"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                <?php endforeach; ?>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             <?php endif; ?>
+            </div>
         </div>
     </main>
 
@@ -161,4 +169,5 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
         });
     </script>
 </body>
+
 </html>

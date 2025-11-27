@@ -5,10 +5,12 @@ redirectIfNotLoggedIn();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soporte - Renta Segura</title>
+    <link rel="icon" type="image/png" href="../IMG/chart-line-solid-full.svg">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -29,6 +31,7 @@ redirectIfNotLoggedIn();
             min-height: 100vh;
             color: var(--dark-text);
         }
+
         /* Header Section */
         .header-section {
             color: black;
@@ -54,14 +57,14 @@ redirectIfNotLoggedIn();
             border-radius: 12px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             transition: all 0.3s ease;
             border-left: 4px solid var(--primary);
         }
 
         .support-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
         .support-card h3 {
@@ -80,7 +83,7 @@ redirectIfNotLoggedIn();
             background: white;
             border-radius: 12px;
             padding: 2.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             margin-bottom: 2rem;
         }
 
@@ -101,7 +104,8 @@ redirectIfNotLoggedIn();
             margin-bottom: 0.5rem;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border: 2px solid #E5E7EB;
             border-radius: 8px;
             padding: 0.75rem 1rem;
@@ -109,7 +113,8 @@ redirectIfNotLoggedIn();
             transition: all 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(91, 110, 255, 0.1);
             outline: none;
@@ -230,8 +235,9 @@ redirectIfNotLoggedIn();
         }
     </style>
 </head>
+
 <body>
-    <?php include '../navbar.php'; ?>   
+    <?php include '../navbar.php'; ?>
 
     <!-- Header -->
     <div class="header-section">
@@ -275,13 +281,13 @@ redirectIfNotLoggedIn();
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="nombre" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" id="nombre" placeholder="Juan Pérez" required>
+                            <input type="text" class="form-control solo-letras" id="nombre" placeholder="Juan Pérez" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email" class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" id="email" placeholder="juan@example.com" required>
+                            <input type="email" class="form-control correo" id="email" placeholder="juan@example.com" required>
                         </div>
                     </div>
                 </div>
@@ -340,7 +346,7 @@ redirectIfNotLoggedIn();
         <!-- FAQ Section -->
         <div class="faq-section">
             <h2 class="mb-4" style="text-align: center; font-weight: 700; color: var(--dark-text);">Preguntas Frecuentes</h2>
-            
+
             <div class="accordion" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
@@ -423,7 +429,7 @@ redirectIfNotLoggedIn();
         // Manejo del formulario
         document.getElementById('supportForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const nombre = document.getElementById('nombre').value;
             const email = document.getElementById('email').value;
             const categoria = document.getElementById('categoria').value;
@@ -433,7 +439,13 @@ redirectIfNotLoggedIn();
             const contacto = document.getElementById('contacto').checked;
 
             console.log("[v0] Formulario enviado:", {
-                nombre, email, categoria, severidad, descripcion, pasos, contacto
+                nombre,
+                email,
+                categoria,
+                severidad,
+                descripcion,
+                pasos,
+                contacto
             });
 
             // Mostrar mensaje de éxito
@@ -456,5 +468,7 @@ redirectIfNotLoggedIn();
             }, 5000);
         });
     </script>
+    <script src="../JS/validaciones.js"></script>
 </body>
+
 </html>

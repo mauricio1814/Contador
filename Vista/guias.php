@@ -189,8 +189,8 @@ redirectIfNotLoggedIn();
     <?php include '../navbar.php'; ?>
 
     <div class="container-main">
-        <div class="page-header">
-            <h1>Guía de Declaración de Renta</h1>
+        <div class="page-header mt-5">
+            <h1><i class="fas fa-book"></i> Guía de Declaración de Renta</h1>
             <p>Aprende paso a paso cómo hacer tu declaración de renta de forma correcta y segura</p>
         </div>
 

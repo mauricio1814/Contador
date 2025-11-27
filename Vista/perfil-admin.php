@@ -23,6 +23,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,14 +34,16 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
         .admin-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 25px;
             margin-bottom: 25px;
             transition: transform 0.3s ease;
         }
+
         .admin-card:hover {
             transform: translateY(-5px);
         }
+
         .stats-card {
             text-align: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -49,15 +52,18 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
             padding: 20px;
             margin-bottom: 20px;
         }
+
         .stats-number {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 0;
         }
+
         .stats-label {
             font-size: 1rem;
             opacity: 0.9;
         }
+
         .btn-admin {
             background: #0d6efd;
             color: white;
@@ -67,16 +73,19 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-admin:hover {
             background: #0056d2;
             transform: scale(1.05);
         }
+
         .header-admin {
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         .btn-logout {
             border: 2px solid #dc3545;
             color: #dc3545;
@@ -85,6 +94,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-logout:hover {
             background: #dc3545;
             color: white;
@@ -92,6 +102,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
@@ -110,12 +121,11 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
                                 <a href="admin-usuarios.php" class="btn btn-admin">
                                     <i class="fas fa-users me-2"></i>Gestionar Usuarios
                                 </a>
-                                
+
                                 <!-- Botón de Cerrar Sesión -->
-                                <a href="../logout.php" class="btn btn-outline-danger" 
-                                   onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                                </a>
+                                <button class="btn btn-outline-danger" onclick="confirmarLogout()">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -169,5 +179,31 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmarLogout() {
+            Swal.fire({
+                title: "Cerrar Sesión",
+                text: "¿Seguro que deseas cerrar sesión?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Sí",
+                cancelButtonText: "Cancelar",
+                backdrop: true,
+                customClass: {
+                    popup: 'rounded-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "../logout.php";
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 </body>
+
 </html>

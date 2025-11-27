@@ -41,6 +41,7 @@ $total_contribuyentes = count($contribuyentes);
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,14 +52,16 @@ $total_contribuyentes = count($contribuyentes);
         .contador-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 25px;
             margin-bottom: 25px;
             transition: transform 0.3s ease;
         }
+
         .contador-card:hover {
             transform: translateY(-5px);
         }
+
         .stats-card {
             text-align: center;
             background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
@@ -69,15 +72,18 @@ $total_contribuyentes = count($contribuyentes);
             padding: 20px;
             margin-bottom: 20px;
         }
+
         .stats-number {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 0;
         }
+
         .stats-label {
             font-size: 1rem;
             opacity: 0.9;
         }
+
         .btn-contador {
             background: #3498db;
             color: white;
@@ -87,16 +93,19 @@ $total_contribuyentes = count($contribuyentes);
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-contador:hover {
             background: #2980b9;
             transform: scale(1.05);
         }
+
         .header-contador {
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         .btn-logout {
             border: 2px solid #dc3545;
             color: #dc3545;
@@ -105,11 +114,13 @@ $total_contribuyentes = count($contribuyentes);
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-logout:hover {
             background: #dc3545;
             color: white;
             transform: scale(1.05);
         }
+
         .contribuyente-item {
             border-left: 4px solid #0d6efd;
             padding: 15px;
@@ -119,6 +130,7 @@ $total_contribuyentes = count($contribuyentes);
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
@@ -137,11 +149,10 @@ $total_contribuyentes = count($contribuyentes);
                                 <a href="gestionar-contribuyentes.php" class="btn btn-contador">
                                     <i class="fas fa-users me-2"></i>Gestionar Contribuyentes
                                 </a>
-                                
-                                <a href="../logout.php" class="btn btn-outline-danger" 
-                                   onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                                </a>
+
+                                <button class="btn btn-outline-danger" onclick="confirmarLogout()">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -176,22 +187,22 @@ $total_contribuyentes = count($contribuyentes);
             <div class="col-md-6">
                 <div class="contador-card">
                     <h4 class="mb-3"><i class="fas fa-user-circle me-2"></i>Información Personal</h4>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fa fa-user me-2 text-success"></i>Nombre:</strong><br>
                         <?php echo $contador['nombre'] ?? 'N/A'; ?> <?php echo $contador['apellido'] ?? 'N/A'; ?>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fas fa-id-card me-2 text-success"></i>Documento:</strong><br>
                         <?php echo $contador['tipo_documento'] ?? 'N/A'; ?>: <?php echo $contador['numero_documento'] ?? 'N/A'; ?>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fas fa-envelope me-2 text-success"></i>Correo:</strong><br>
                         <?php echo $contador['correo'] ?? 'N/A'; ?>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fas fa-phone me-2 text-success"></i>Teléfono:</strong><br>
                         <?php echo $contador['telefono'] ?? 'No registrado'; ?>
@@ -201,7 +212,7 @@ $total_contribuyentes = count($contribuyentes);
                         <strong><i class="fa fa-user me-2 text-success"></i>Cargo:</strong><br>
                         <?php echo $contador['rol'] ?? 'N/A'; ?>
                     </div>
-                                        
+
                     <div class="d-grid">
                         <a href="editar-perfil.php" class="btn btn-contador">
                             <i class="fas fa-edit me-2"></i>Editar Información
@@ -215,7 +226,7 @@ $total_contribuyentes = count($contribuyentes);
             <div class="col-md-6">
                 <div class="contador-card">
                     <h4 class="mb-3"><i class="fas fa-users me-2"></i>Contribuyentes Asignados</h4>
-                    
+
                     <?php if ($total_contribuyentes > 0): ?>
                         <div style="max-height: 400px; overflow-y: auto;">
                             <?php foreach ($contribuyentes as $contribuyente): ?>
@@ -236,16 +247,16 @@ $total_contribuyentes = count($contribuyentes);
                                     </div>
                                     <!-- En la sección de Contribuyentes Asignados, cambiar: -->
                                     <div class="mt-2">
-                                        <a href="ver-documentos.php?id_usuario=<?php echo $contribuyente['id_usuario']; ?>" 
-                                        class="btn btn-sm btn-outline-primary">
+                                        <a href="ver-documentos.php?id_usuario=<?php echo $contribuyente['id_usuario']; ?>"
+                                            class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-eye me-1"></i>Ver
                                         </a>
-                                        <a href="editar-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>" 
-                                        class="btn btn-sm btn-outline-success">
+                                        <a href="editar-contribuyente.php?id=<?php echo $contribuyente['id_usuario']; ?>"
+                                            class="btn btn-sm btn-outline-success">
                                             <i class="fas fa-edit me-1"></i>Editar
                                         </a>
-                                    </div>                                    
-                                </div>                               
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         </div>
                         <div class="d-grid">
@@ -293,5 +304,29 @@ $total_contribuyentes = count($contribuyentes);
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmarLogout() {
+            Swal.fire({
+                title: "Cerrar Sesión",
+                text: "¿Seguro que deseas cerrar sesión?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Sí",
+                cancelButtonText: "Cancelar",
+                backdrop: true,
+                customClass: {
+                    popup: 'rounded-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "../logout.php";
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
 </html>

@@ -53,6 +53,7 @@ if (!$contador) {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,14 +64,16 @@ if (!$contador) {
         .usuario-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 25px;
             margin-bottom: 25px;
             transition: transform 0.3s ease;
         }
+
         .usuario-card:hover {
             transform: translateY(-5px);
         }
+
         .stats-card {
             text-align: center;
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -81,15 +84,18 @@ if (!$contador) {
             padding: 20px;
             margin-bottom: 20px;
         }
+
         .stats-number {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 0;
         }
+
         .stats-label {
             font-size: 1rem;
             opacity: 0.9;
         }
+
         .btn-usuario {
             background: #28a745;
             color: white;
@@ -99,16 +105,19 @@ if (!$contador) {
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-usuario:hover {
             background: #218838;
             transform: scale(1.05);
         }
+
         .header-usuario {
             background: white;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         .btn-logout {
             border: 2px solid #dc3545;
             color: #dc3545;
@@ -117,16 +126,19 @@ if (!$contador) {
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-logout:hover {
             background: #dc3545;
             color: white;
             transform: scale(1.05);
         }
+
         .contador-card {
             border-left: 4px solid #28a745;
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
@@ -145,11 +157,11 @@ if (!$contador) {
                                 <a href="mis-declaraciones.php" class="btn btn-usuario">
                                     <i class="fas fa-file-invoice-dollar me-2"></i>Mis Declaraciones
                                 </a>
-                                
-                                <a href="../logout.php" class="btn btn-outline-danger" 
-                                   onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
-                                    <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                                </a>
+
+                                <button class="btn btn-outline-danger" onclick="confirmarLogout()">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                                </button>
+
                             </div>
                         </div>
                     </div>
@@ -178,29 +190,29 @@ if (!$contador) {
                 </div>
             </div>
         </div>
-        
+
 
         <div class="row">
             <!-- Información Personal -->
             <div class="col-md-6">
                 <div class="usuario-card">
                     <h4 class="mb-3"><i class="fas fa-user-circle me-2"></i>Información Personal</h4>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fa fa-user me-2 text-primary"></i>Nombre:</strong><br>
                         <?php echo $usuario['nombre'] ?? 'N/A'; ?> <?php echo $usuario['apellido'] ?? 'N/A'; ?>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fas fa-id-card me-2 text-primary"></i>Documento:</strong><br>
                         <?php echo $usuario['tipo_documento'] ?? 'N/A'; ?>: <?php echo $usuario['numero_documento'] ?? 'N/A'; ?>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fas fa-envelope me-2 text-primary"></i>Correo:</strong><br>
                         <?php echo $usuario['correo'] ?? 'N/A'; ?>
                     </div>
-                    
+
                     <div class="mb-3">
                         <strong><i class="fas fa-phone me-2 text-primary"></i>Teléfono:</strong><br>
                         <?php echo $usuario['telefono'] ?? 'No registrado'; ?>
@@ -210,7 +222,7 @@ if (!$contador) {
                         <strong><i class="fa fa-user me-2 text-primary"></i>Cargo:</strong><br>
                         Contribuyente
                     </div>
-                    
+
                     <div class="d-grid">
                         <a href="editar-perfil.php" class="btn btn-usuario">
                             <i class="fas fa-edit me-2"></i>Editar Información
@@ -223,23 +235,23 @@ if (!$contador) {
             <div class="col-md-6">
                 <div class="usuario-card contador-card">
                     <h4 class="mb-3"><i class="fas fa-user-tie me-2"></i>Contador Asignado</h4>
-                    
+
                     <?php if ($contador['nombre'] !== 'No asignado'): ?>
                         <div class="mb-3">
                             <strong><i class="fa fa-user me-2 text-success"></i>Nombre:</strong><br>
                             <?php echo $contador['nombre'] . ' ' . $contador['apellido']; ?>
                         </div>
-                        
+
                         <div class="mb-3">
                             <strong><i class="fas fa-id-card me-2 text-success"></i>Documento:</strong><br>
                             <?php echo $contador['tipo_documento'] . ': ' . $contador['numero_documento']; ?>
                         </div>
-                        
+
                         <div class="mb-3">
                             <strong><i class="fas fa-envelope me-2 text-success"></i>Correo:</strong><br>
                             <?php echo $contador['correo']; ?>
                         </div>
-                        
+
                         <div class="mb-3">
                             <strong><i class="fas fa-phone me-2 text-success"></i>Teléfono:</strong><br>
                             <?php echo $contador['telefono']; ?>
@@ -249,7 +261,7 @@ if (!$contador) {
                             <strong><i class="fa fa-user me-2 text-success"></i>Cargo:</strong><br>
                             Contador
                         </div>
-                        
+
                         <!--
                         <div class="d-grid">
                             <a href="contactar-contador.php" class="btn btn-usuario">
@@ -299,5 +311,29 @@ if (!$contador) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function confirmarLogout() {
+            Swal.fire({
+                title: "Cerrar Sesión",
+                text: "¿Seguro que deseas cerrar sesión?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Sí",
+                cancelButtonText: "Cancelar",
+                backdrop: true,
+                customClass: {
+                    popup: 'rounded-4'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "../logout.php";
+                }
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
+
 </html>

@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
     $correo = trim($_POST['correo']);
     $telefono = trim($_POST['telefono']);
     $contrasena = $_POST['contrasena'];
-    
+
     // El rol siempre será 'usuario' (contribuyente) y se asigna automáticamente al contador actual
     $rol = 'usuario';
     $contador_asignado = $contador_id;
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
         $check_stmt = $db->prepare($check_query);
         $check_stmt->bindParam(":correo", $correo);
         $check_stmt->execute();
-        
+
         if ($check_stmt->rowCount() > 0) {
             $error = "El correo electrónico ya está registrado.";
         } else {
@@ -59,18 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                 $check_doc_stmt = $db->prepare($check_doc_query);
                 $check_doc_stmt->bindParam(":numero_documento", $numero_documento);
                 $check_doc_stmt->execute();
-                
+
                 if ($check_doc_stmt->rowCount() > 0) {
                     $error = "El número de documento ya está registrado.";
                 }
             }
-            
+
             if (empty($error)) {
                 $hashed_password = password_hash($contrasena, PASSWORD_DEFAULT);
-                
+
                 $query = "INSERT INTO usuario (nombre, apellido, tipo_documento, numero_documento, correo, telefono, contrasena, rol, contador_asignado) 
                           VALUES (:nombre, :apellido, :tipo_documento, :numero_documento, :correo, :telefono, :contrasena, :rol, :contador_asignado)";
-                
+
                 $stmt = $db->prepare($query);
                 $stmt->bindParam(":nombre", $nombre);
                 $stmt->bindParam(":apellido", $apellido);
@@ -81,10 +81,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                 $stmt->bindParam(":contrasena", $hashed_password);
                 $stmt->bindParam(":rol", $rol);
                 $stmt->bindParam(":contador_asignado", $contador_asignado);
-                
+
                 if ($stmt->execute()) {
                     $success = "Contribuyente registrado exitosamente y asignado a tu cuenta.";
-                    
+
                     // Limpiar formulario
                     $_POST = array();
                 } else {
@@ -98,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,26 +109,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
         .registro-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             padding: 30px;
             max-width: 800px;
             margin: 0 auto;
         }
+
         .form-label {
             font-weight: 600;
             color: #333;
             margin-bottom: 8px;
         }
+
         .form-control {
             border-radius: 8px;
             border: 2px solid #e9ecef;
             padding: 10px 15px;
             transition: all 0.3s ease;
         }
+
         .form-control:focus {
             border-color: #0d6efd;
             box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
         }
+
         .btn-registro {
             background: #0d6efd;
             color: white;
@@ -138,10 +143,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
             font-size: 1.1rem;
             transition: all 0.3s ease;
         }
+
         .btn-registro:hover {
             background: #0056d2;
             transform: scale(1.05);
         }
+
         .btn-volver {
             background: #6c757d;
             color: white;
@@ -151,10 +158,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
             font-weight: 600;
             transition: all 0.3s ease;
         }
+
         .btn-volver:hover {
             background: #5a6268;
             transform: scale(1.05);
         }
+
         .contador-info {
             background: linear-gradient(135deg, #3498db, #2c3e50);
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
@@ -164,11 +173,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
             padding: 15px;
             margin-bottom: 20px;
         }
+
         .field-disabled {
             background-color: #f8f9fa;
             opacity: 0.7;
             cursor: not-allowed;
         }
+
         .info-badge {
             background: #e7f3ff;
             color: #0d6efd;
@@ -179,6 +190,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
         }
     </style>
 </head>
+
 <body>
     <?php include '../navbar.php'; ?>
 
@@ -221,12 +233,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                     -->
 
                     <!-- Mensajes -->
-                    <?php if ($error): ?>
-                        <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <?php if (!empty($error)): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "¡Error!",
+                                    text: "<?php echo $error; ?>",
+                                    confirmButtonColor: "#d33",
+                                    background: "#fff",
+                                    color: "#000"
+                                });
+                            });
+                        </script>
                     <?php endif; ?>
-                    
-                    <?php if ($success): ?>
-                        <div class="alert alert-success"><?php echo $success; ?></div>
+
+                    <?php if (!empty($success)): ?>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "¡Usuario registrado!",
+                                    text: "<?php echo $success; ?>",
+                                    confirmButtonColor: "#0d6efd"
+                                });
+                            });
+                        </script>
                     <?php endif; ?>
 
                     <!-- Formulario -->
@@ -235,17 +267,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                             <!-- Nombre -->
                             <div class="col-md-6 mb-3">
                                 <label for="nombre" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre" 
-                                       value="<?php echo isset($_POST['nombre']) ? $_POST['nombre'] : ''; ?>" 
-                                       required>
+                                <input type="text" class="form-control solo-letras" id="nombre" name="nombre"
+                                    value="<?php echo isset($_POST['nombre']) ? $_POST['nombre'] : ''; ?>"
+                                    required>
                             </div>
 
                             <!-- Apellido -->
                             <div class="col-md-6 mb-3">
                                 <label for="apellido" class="form-label">Apellido</label>
-                                <input type="text" class="form-control" id="apellido" name="apellido"
-                                       value="<?php echo isset($_POST['apellido']) ? $_POST['apellido'] : ''; ?>"
-                                       required>
+                                <input type="text" class="form-control solo-letras" id="apellido" name="apellido"
+                                    value="<?php echo isset($_POST['apellido']) ? $_POST['apellido'] : ''; ?>"
+                                    required>
                             </div>
                         </div>
 
@@ -264,9 +296,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
 
                             <div class="col-md-6 mb-3">
                                 <label for="numero_documento" class="form-label">No. documento</label>
-                                <input type="text" class="form-control" id="numero_documento" name="numero_documento"
-                                       value="<?php echo isset($_POST['numero_documento']) ? $_POST['numero_documento'] : ''; ?>"
-                                       required>
+                                <input type="text" class="form-control solo-numeros" id="numero_documento" name="numero_documento"
+                                    value="<?php echo isset($_POST['numero_documento']) ? $_POST['numero_documento'] : ''; ?>"
+                                    required>
                             </div>
                         </div>
 
@@ -274,16 +306,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                             <!-- Correo -->
                             <div class="col-md-6 mb-3">
                                 <label for="correo" class="form-label">Correo</label>
-                                <input type="email" class="form-control" id="correo" name="correo"
-                                       value="<?php echo isset($_POST['correo']) ? $_POST['correo'] : ''; ?>"
-                                       required>
+                                <input type="email" class="form-control correo" id="correo" name="correo"
+                                    value="<?php echo isset($_POST['correo']) ? $_POST['correo'] : ''; ?>"
+                                    required>
                             </div>
 
                             <!-- Teléfono -->
                             <div class="col-md-6 mb-3">
                                 <label for="telefono" class="form-label">Teléfono</label>
-                                <input type="tel" class="form-control" id="telefono" name="telefono"
-                                       value="<?php echo isset($_POST['telefono']) ? $_POST['telefono'] : ''; ?>">
+                                <input type="tel" class="form-control solo-numeros" id="telefono" name="telefono"
+                                    value="<?php echo isset($_POST['telefono']) ? $_POST['telefono'] : ''; ?>">
                             </div>
                         </div>
 
@@ -330,7 +362,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
             </div>
         </div>
     </div>
-
+    <script src="../JS/validaciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
+
 </html>
