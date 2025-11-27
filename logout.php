@@ -17,7 +17,6 @@ if (ini_get("session.use_cookies")) {
 // Finalmente, destruir la sesión.
 session_destroy();
 
-// Redirigir al login con ruta relativa
 // Redirigir al login (que está en la carpeta Vista)
 header("Location: Vista/login.php");
 exit();
