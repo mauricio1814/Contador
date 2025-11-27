@@ -66,7 +66,7 @@ redirectIfNotLoggedIn();
         </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER 
     <footer>
         <div class="container">
             <div class="alert alert-secondary d-flex justify-content-between align-items-center" role="alert">
@@ -75,6 +75,7 @@ redirectIfNotLoggedIn();
             </div>
         </div>
     </footer>
+    -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

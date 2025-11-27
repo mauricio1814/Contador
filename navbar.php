@@ -77,7 +77,7 @@ include_once '../includes/session.php';
                     </li>
                     <li class="nav-item">
                         <a class="nav-link <?php echo basename($_SERVER['PHP_SELF']) == 'soporte.php' ? 'active' : ''; ?>"
-                            href="soporte.php"><i class="fas fa-life-ring"></i> Soporte</a>
+                            href="soporte.php"><i class="fas fa-headset"></i> Soporte</a>
                     </li>
 
                     <?php if (isLoggedIn()): ?>

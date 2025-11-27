@@ -1,4 +1,5 @@
 <?php
+// logout.php (en la raíz del proyecto)
 session_start();
 
 // Destruir todas las variables de sesión
@@ -17,6 +18,7 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirigir al login con ruta relativa
+// Redirigir al login (que está en la carpeta Vista)
 header("Location: Vista/login.php");
 exit();
 ?>
