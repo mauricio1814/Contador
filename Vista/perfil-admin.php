@@ -105,6 +105,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
 
 <body>
     <?php include '../navbar.php'; ?>
+    <?php include '../modal-logout.php'; ?>
 
     <div class="container mt-4">
         <!-- Header del Perfil -->
@@ -133,7 +134,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
             </div>
         </div>
 
-        <!-- Estadísticas -->
+        <!-- Estadísticas 
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="stats-card">
@@ -154,6 +155,7 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
                 </div>
             </div>
         </div>
+        -->
 
         <!-- Acciones Rápidas -->
         <div class="row">
@@ -170,9 +172,9 @@ $total_contribuyentes = $db->query($query_contribuyentes)->fetch(PDO::FETCH_ASSO
                 <div class="admin-card">
                     <h4 class="mb-3"><i class="fas fa-chart-bar me-2"></i>Reportes</h4>
                     <p>Reportes del sistema</p>
-                    <button class="btn btn-admin" onclick="alert('Funcionalidad en desarrollo')">
-                        <i class="fas fa-download me-2"></i>Ver Reporte
-                    </button>
+                    <a href="ver-reportes.php" class="btn btn-admin">
+                        <i class="fas fa-plus me-2"></i>Ver Reportes
+                    </a>
                 </div>
             </div>
         </div>

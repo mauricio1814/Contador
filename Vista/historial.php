@@ -33,7 +33,7 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        /* Mantener los estilos existentes y agregar: */
+
         .observaciones-box {
             background-color: #f8f9fa;
             border-left: 4px solid #0d6efd;
@@ -49,6 +49,23 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
 
         .declaracion-detalle:hover {
             background-color: #f8f9fa;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #000000ff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
         }
     </style>
 </head>

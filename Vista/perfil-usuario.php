@@ -136,11 +136,15 @@ if (!$contador) {
         .contador-card {
             border-left: 4px solid #28a745;
         }
+
+
+
     </style>
 </head>
 
 <body>
     <?php include '../navbar.php'; ?>
+    <?php include '../modal-logout.php'; ?>
 
     <div class="container mt-4">
         <!-- Header del Perfil -->
@@ -169,7 +173,7 @@ if (!$contador) {
             </div>
         </div>
 
-        <!-- Estadísticas -->
+        <!-- Estadísticas 
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="stats-card">
@@ -285,7 +289,7 @@ if (!$contador) {
         <div class="row mt-4">
             <div class="col-md-4">
                 <div class="usuario-card text-center">
-                    <i class="fas fa-file-invoice-dollar fa-2x text-success mb-3"></i>
+                    <i class="fas fa-file-invoice-dollar fa-2x text-primary mb-3"></i>
                     <h5>Declaraciones</h5>
                     <p class="text-muted">Gestionar mis declaraciones</p>
                     <a href="mis-declaraciones.php" class="btn btn-usuario">Ver Declaraciones</a>
@@ -293,7 +297,7 @@ if (!$contador) {
             </div>
             <div class="col-md-4">
                 <div class="usuario-card text-center">
-                    <i class="fas fa-history fa-2x text-info mb-3"></i>
+                    <i class="fas fa-history fa-2x text-primary mb-3"></i>
                     <h5>Historial</h5>
                     <p class="text-muted">Ver mi historial tributario</p>
                     <a href="historial.php" class="btn btn-usuario">Ver Historial</a>
@@ -301,10 +305,10 @@ if (!$contador) {
             </div>
             <div class="col-md-4">
                 <div class="usuario-card text-center">
-                    <i class="fas fa-cogs fa-2x text-warning mb-3"></i>
-                    <h5>Configuración</h5>
-                    <p class="text-muted">Ajustes de mi cuenta</p>
-                    <a href="configuracion.php" class="btn btn-usuario">Ajustes</a>
+                    <i class="fas fa-headset fa-2x text-primary mb-3"></i>
+                    <h5>Mis Reportes</h5>
+                    <p class="text-muted">Ver mis reportes de soporte</p>
+                    <a href="mis-reportes.php" class="btn btn-usuario">Ver Reportes</a>
                 </div>
             </div>
         </div>

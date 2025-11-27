@@ -11,9 +11,7 @@ if (!isAdmin()) {
 $database = new Database();
 $db = $database->getConnection();
 
-// =============================================
 // LÓGICA PARA ELIMINAR USUARIO
-// =============================================
 if (isset($_GET['eliminar']) && !empty($_GET['eliminar'])) {
     $id_usuario_eliminar = $_GET['eliminar'];
     
@@ -21,7 +19,7 @@ if (isset($_GET['eliminar']) && !empty($_GET['eliminar'])) {
         // Iniciar transacción
         $db->beginTransaction();
         
-        // 1. Primero obtener información del usuario para mensajes y validaciones
+        // obtener información del usuario para mensajes y validaciones
         $query_info = "SELECT id_usuario, rol, nombre, apellido FROM usuario WHERE id_usuario = ?";
         $stmt_info = $db->prepare($query_info);
         $stmt_info->execute([$id_usuario_eliminar]);
@@ -33,14 +31,14 @@ if (isset($_GET['eliminar']) && !empty($_GET['eliminar'])) {
             exit();
         }
         
-        // 2. Si es un contador, liberar a los contribuyentes que tenía asignados
+        // Si es un contador, liberar a los contribuyentes que tenía asignados
         if ($usuario_info['rol'] === 'contador') {
             $query_liberar = "UPDATE usuario SET contador_asignado = NULL WHERE contador_asignado = ?";
             $stmt_liberar = $db->prepare($query_liberar);
             $stmt_liberar->execute([$id_usuario_eliminar]);
         }
         
-        // 3. ELIMINACIÓN FÍSICA - Eliminar completamente de la base de datos
+        // Eliminar completamente de la base de datos
         $query_eliminar = "DELETE FROM usuario WHERE id_usuario = ?";
         $stmt_eliminar = $db->prepare($query_eliminar);
         $resultado = $stmt_eliminar->execute([$id_usuario_eliminar]);
@@ -68,9 +66,7 @@ if (isset($_GET['eliminar']) && !empty($_GET['eliminar'])) {
     exit();
 }
 
-// =============================================
-// OBTENER USUARIOS PARA MOSTRAR
-// =============================================
+
 // Obtener todos los usuarios activos
 $query = "SELECT u.*, c.nombre as contador_nombre, c.apellido as contador_apellido 
           FROM usuario u 
@@ -263,14 +259,14 @@ if (isset($_SESSION['error'])) {
             gap: 5px;
             margin-top: 5px;
         }
-        /* CORRECCIÓN PARA LAS PESTAÑAS */
+        
         .tab-content > .tab-pane {
             display: none;
         }
         .tab-content > .active {
             display: block;
         }
-        /* Asegurar que Bootstrap maneje la visibilidad */
+        
         .fade:not(.show) {
             opacity: 0;
         }
@@ -278,7 +274,7 @@ if (isset($_SESSION['error'])) {
             opacity: 1;
             transition: opacity 0.15s linear;
         }
-        /* ESTILOS PARA EL HEADER COMO EN LA CAPTURA */
+        
         .page-header {
             background: white;
             border-radius: 10px;

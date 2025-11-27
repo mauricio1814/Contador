@@ -34,7 +34,7 @@ redirectIfNotLoggedIn();
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #333;
+            color: #000000ff;
             margin-bottom: 10px;
         }
 
@@ -75,7 +75,7 @@ redirectIfNotLoggedIn();
             border-top-color: #764ba2;
         }
 
-        /* Cambiar números por iconos */
+
         .step-icon {
             font-size: 3.5rem;
             color: #667eea;

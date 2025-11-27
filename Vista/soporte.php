@@ -1,6 +1,47 @@
 <?php
+include_once '../config/database.php';
 include_once '../includes/session.php';
+
 redirectIfNotLoggedIn();
+
+$database = new Database();
+$db = $database->getConnection();
+
+$mensaje = '';
+$tipo_mensaje = '';
+
+// Procesar el formulario si se envió
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $id_usuario = $_SESSION['user_id'];
+        $nombre_completo = $_POST['nombre'] ?? '';
+        $correo = $_POST['email'] ?? '';
+        $categoria = $_POST['categoria'] ?? '';
+        $severidad = $_POST['severidad'] ?? '';
+        $descripcion = $_POST['descripcion'] ?? '';
+        $pasos_reproducir = $_POST['pasos'] ?? '';
+        $desea_contacto = isset($_POST['contacto']) ? 1 : 0;
+
+        // Validar campos requeridos
+        if (empty($nombre_completo) || empty($correo) || empty($categoria) || empty($severidad) || empty($descripcion)) {
+            throw new Exception('Todos los campos marcados como requeridos deben ser completados.');
+        }
+
+        // Insertar en la base de datos
+        $query = "INSERT INTO soporte (id_usuario, nombre_completo, correo, categoria, severidad, descripcion, pasos_reproducir, desea_contacto) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $stmt = $db->prepare($query);
+        $stmt->execute([$id_usuario, $nombre_completo, $correo, $categoria, $severidad, $descripcion, $pasos_reproducir, $desea_contacto]);
+
+        $mensaje = '¡Gracias por reportar el problema! Hemos recibido tu queja. Te contactaremos pronto.';
+        $tipo_mensaje = 'success';
+
+    } catch (Exception $e) {
+        $mensaje = 'Error al enviar el reporte: ' . $e->getMessage();
+        $tipo_mensaje = 'error';
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +68,7 @@ redirectIfNotLoggedIn();
         }
 
         body {
-            background: linear-gradient(135deg, #F0F4FF 0%, #F8FAFC 100%);
+            background: #f8f9fa;
             min-height: 100vh;
             color: var(--dark-text);
         }
@@ -233,6 +274,23 @@ redirectIfNotLoggedIn();
                 padding: 1.5rem;
             }
         }
+        
+        .page-header {
+        text-align: center;
+        margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #000000ff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 
@@ -241,7 +299,7 @@ redirectIfNotLoggedIn();
 
     <!-- Header -->
     <div class="header-section">
-        <div class="container">
+        <div class="page-header" >
             <h1><i class="fas fa-headset"></i> Centro de Soporte</h1>
             <p>¿Tienes problemas? Estamos aquí para ayudarte. Cuéntanos qué pasó y lo resolveremos rápido.</p>
         </div>
@@ -249,8 +307,16 @@ redirectIfNotLoggedIn();
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Mostrar mensajes -->
+        <?php if ($mensaje): ?>
+            <div class="alert alert-<?php echo $tipo_mensaje === 'success' ? 'success' : 'danger'; ?> alert-dismissible fade show" role="alert">
+                <?php echo $mensaje; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <?php endif; ?>
+
         <div class="row">
-            <!-- Info Cards -->
+            <!-- Info Cards 
             <div class="col-lg-4 col-md-6">
                 <div class="support-card">
                     <h3><i class="fas fa-clock"></i> Respuesta Rápida</h3>
@@ -272,11 +338,12 @@ redirectIfNotLoggedIn();
                 </div>
             </div>
         </div>
+        -->
 
         <!-- Form Section -->
         <div class="form-section">
             <h2>Reportar un Problema</h2>
-            <form id="supportForm">
+            <form id="supportForm" method="POST" action="">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -294,7 +361,7 @@ redirectIfNotLoggedIn();
 
                 <div class="form-group">
                     <label for="categoria" class="form-label">Categoría del Problema</label>
-                    <select class="form-select" id="categoria" required>
+                    <select class="form-select" id="categoria" name="categoria" required>
                         <option value="">Selecciona una categoría</option>
                         <option value="bug">Error o Fallo Técnico</option>
                         <option value="interfaz">Problema en la Interfaz</option>
@@ -307,7 +374,7 @@ redirectIfNotLoggedIn();
 
                 <div class="form-group">
                     <label for="severidad" class="form-label">Nivel de Severidad</label>
-                    <select class="form-select" id="severidad" required>
+                    <select class="form-select" id="severidad" name="severidad" required>
                         <option value="">Selecciona el nivel</option>
                         <option value="baja">Baja - No afecta mucho</option>
                         <option value="media">Media - Afecta el uso</option>
@@ -318,24 +385,10 @@ redirectIfNotLoggedIn();
 
                 <div class="form-group">
                     <label for="descripcion" class="form-label">Descripción del Problema</label>
-                    <textarea class="form-control" id="descripcion" rows="5" placeholder="Describe detalladamente qué pasó, cuándo ocurrió y qué estabas haciendo..." required></textarea>
+                    <textarea class="form-control" id="descripcion" name="descripcion" rows="5" 
+                              placeholder="Describe detalladamente qué pasó, cuándo ocurrió y qué estabas haciendo..." required></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="pasos" class="form-label">Pasos para Reproducir el Problema</label>
-                    <textarea class="form-control" id="pasos" rows="3" placeholder="1. Ingresa a tu cuenta&#10;2. Ve a la sección de...&#10;3. Intenta..."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="contacto" checked>
-                        <label class="form-check-label" for="contacto">
-                            Deseo que el equipo de soporte se comunique conmigo para más detalles
-                        </label>
-                    </div>
-                </div>
-
-                <div id="mensaje-respuesta" style="display: none; margin-bottom: 1rem;"></div>
 
                 <button type="submit" class="btn-submit">
                     <i class="fas fa-paper-plane"></i> Enviar Queja
@@ -416,13 +469,14 @@ redirectIfNotLoggedIn();
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer 
     <div class="footer-custom">
         <div class="container">
             <p>&copy; 2025 Renta Segura. Todos los derechos reservados.</p>
             <p style="font-size: 0.9rem; margin-top: 0.5rem;">Horario de atención: Lunes a Viernes 8 AM - 6 PM | Contacto: soporte@rentasegura.com | +57 (1) 3456-7890</p>
         </div>
     </div>
+    -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -451,21 +505,12 @@ redirectIfNotLoggedIn();
             // Mostrar mensaje de éxito
             const mensajeDiv = document.getElementById('mensaje-respuesta');
             mensajeDiv.innerHTML = `
-                <div class="alert-success">
-                    <i class="fas fa-check-circle"></i> ¡Gracias por reportar el problema! 
-                    Hemos recibido tu queja con ticket #${Math.floor(Math.random() * 1000000)}. 
-                    Te contactaremos pronto a ${email}.
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="fas fa-spinner fa-spin me-2"></i> Procesando tu reporte...
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             `;
-            mensajeDiv.style.display = 'block';
-
-            // Limpiar formulario
-            this.reset();
-
-            // Ocultar mensaje después de 5 segundos
-            setTimeout(() => {
-                mensajeDiv.style.display = 'none';
-            }, 5000);
+            this.parentNode.insertBefore(mensajeDiv, this);
         });
     </script>
     <script src="../JS/validaciones.js"></script>

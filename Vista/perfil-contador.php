@@ -133,6 +133,7 @@ $total_contribuyentes = count($contribuyentes);
 
 <body>
     <?php include '../navbar.php'; ?>
+    <?php include '../modal-logout.php'; ?>
 
     <div class="container mt-4">
         <!-- Header del Perfil -->
@@ -160,7 +161,7 @@ $total_contribuyentes = count($contribuyentes);
             </div>
         </div>
 
-        <!-- Estadísticas -->
+        <!-- Estadísticas 
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="stats-card">
@@ -181,6 +182,8 @@ $total_contribuyentes = count($contribuyentes);
                 </div>
             </div>
         </div>
+        
+        -->
 
         <div class="row">
             <!-- Información Personal -->
@@ -278,29 +281,30 @@ $total_contribuyentes = count($contribuyentes);
         <div class="row mt-4">
             <div class="col-md-4">
                 <div class="contador-card text-center">
-                    <i class="fas fa-file-invoice-dollar fa-2x text-primary mb-3"></i>
-                    <h5>Declaraciones</h5>
-                    <p class="text-muted">Gestionar declaraciones tributarias</p>
-                    <a href="declaraciones.php" class="btn btn-contador">Gestionar</a>
+                    <i class="fas fa-user fa-2x text-success mb-3"></i>
+                    <h5>Añadir</h5>
+                    <p class="text-muted">Añadir nuevo Contribuyente</p>
+                    <a href="registro-contribuyente.php" class="btn btn-contador">Añadir</a>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="contador-card text-center">
-                    <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
-                    <h5>Reportes</h5>
-                    <p class="text-muted">Generar reportes financieros</p>
-                    <a href="reportes.php" class="btn btn-contador">Generar</a>
+                    <i class="fas fa-users fa-2x text-success mb-3"></i>
+                    <h5>Contribuyentes</h5>
+                    <p class="text-muted">Gestionar Contribuyentes</p>
+                    <a href="gestionar-contribuyentes.php" class="btn btn-contador">Gestionar</a>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="contador-card text-center">
-                    <i class="fas fa-cogs fa-2x text-warning mb-3"></i>
-                    <h5>Configuración</h5>
-                    <p class="text-muted">Ajustes de tu cuenta</p>
-                    <a href="configuracion.php" class="btn btn-contador">Ajustes</a>
+                    <i class="fas fa-headset fa-2x text-success mb-3"></i>
+                    <h5>Mis Reportes</h5>
+                    <p class="text-muted">Ver mis reportes de soporte</p>
+                    <a href="mis-reportes.php" class="btn btn-contador">Ver Reportes</a>
                 </div>
             </div>
         </div>
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

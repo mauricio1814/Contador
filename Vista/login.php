@@ -371,7 +371,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && empty($error)) {
                         <span class="toggle-password" onclick="togglePassword()">👁️</span>
                     </div>
 
-                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    
 
                     <button type="submit" class="btn-login">Iniciar Sesión</button>
                 </form>
