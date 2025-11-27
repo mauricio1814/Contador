@@ -34,7 +34,7 @@ redirectIfNotLoggedIn();
         .page-header h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #333;
+            color: #000000ff;
             margin-bottom: 10px;
         }
 
@@ -75,7 +75,7 @@ redirectIfNotLoggedIn();
             border-top-color: #764ba2;
         }
 
-        /* Cambiar números por iconos */
+
         .step-icon {
             font-size: 3.5rem;
             color: #667eea;
@@ -190,8 +190,10 @@ redirectIfNotLoggedIn();
 
     <div class="container-main">
         <div class="page-header">
-            <h1>Guía de Declaración de Renta</h1>
-            <p>Aprende paso a paso cómo hacer tu declaración de renta de forma correcta y segura</p>
+            <div class="page-header" style="padding: 4rem 0; text-align: center; margin-bottom: 3rem;">
+                <h1> <i class="fas fa-book"> </i> Guía de Declaración de Renta</h1>
+                <p>Aprende paso a paso cómo hacer tu declaración de renta de forma correcta y segura</p>
+            </div>
         </div>
 
         <div class="steps-grid">

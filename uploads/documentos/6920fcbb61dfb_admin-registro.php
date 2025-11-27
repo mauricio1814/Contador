@@ -99,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                         $return_text = 'Volver a la Lista';
                     }
                     
-                   
+                    // Limpiar formulario
                     $_POST = array();
                 } else {
                     $error = "Error al registrar el usuario. Por favor, intenta nuevamente.";
@@ -190,6 +190,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                         <h2 class="mb-1">Renta Segura</h2>
                         <h4 class="text-primary">Registro de Usuario</h4>
                         
+                        <!-- Información del contexto 
+                        <?php if ($from_list): ?>
+                            <div class="context-info">
+                                <i class="fas fa-users me-2"></i>
+                                <strong>Modo Lista:</strong> Al guardar volverás a la lista de usuarios
+                            </div>
+                        <?php else: ?>
+                            <div class="context-info">
+                                <i class="fas fa-user-shield me-2"></i>
+                                <strong>Modo Perfil:</strong> Al guardar volverás al perfil de administrador
+                            </div>
+                        <?php endif; ?>
+                        -->
                     </div>
 
                     <!-- Mensajes -->
@@ -277,7 +290,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['registrar_usuario'])) 
                             </div>
                         </div>
 
-                        <!-- Campo Contador -->
+                        <!-- Campo Contador (solo para contribuyentes) -->
                         <div class="row" id="contador-field" style="display: <?php echo (isset($_POST['rol']) && $_POST['rol'] == 'usuario') ? 'block' : 'none'; ?>;">
                             <div class="col-12 mb-3">
                                 <label for="contador_asignado" class="form-label">Asignar Contador</label>

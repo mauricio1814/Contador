@@ -29,7 +29,7 @@ function getTotalDocumentosUsuario($db, $usuario_id) {
 // Obtener el total actual de documentos del usuario
 $total_documentos_usuario = getTotalDocumentosUsuario($db, $usuario_id);
 
-// Procesar formulario - IMPLEMENTACIÓN PRG (Post-Redirect-Get)
+// Procesar formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subir_declaracion'])) {
     if (!$puedeSubirDocumentos) {
         $_SESSION['mensaje'] = "<div class='alert alert-danger'>
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subir_declaracion'])) 
             $observaciones = $_POST['descripcion'] ?? '';
             $anio_fiscal = date('Y', strtotime($fecha));
             
-            // 1. VERIFICAR CARPETA
+            //VERIFICAR CARPETA
             $carpeta_documentos = "../uploads/documentos/";
             
             // Crear carpeta si no existe
@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subir_declaracion'])) 
             
             $db->beginTransaction();
             
-            // 2. INSERTAR DECLARACIÓN - SIN CONTADOR (usa NULL)
+            //INSERTAR DECLARACIÓN - SIN CONTADOR (usa NULL)
             $sql_declaracion = "INSERT INTO declaracion (id_usuario, id_contador, anio_fiscal, estado) 
                                VALUES (?, NULL, ?, 'pendiente')";
             $stmt_declaracion = $db->prepare($sql_declaracion);
@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subir_declaracion'])) 
             $declaracion_id = $db->lastInsertId();
             $archivos_subidos = 0;
             
-            // 3. PROCESAR ARCHIVOS
+            //PROCESAR ARCHIVOS
             if (isset($_FILES['documentos']) && !empty($_FILES['documentos']['name'][0])) {
                 
                 foreach ($_FILES['documentos']['name'] as $key => $nombre_archivo) {
@@ -144,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subir_declaracion'])) 
                 throw new Exception("No se pudieron subir los documentos.");
             }
             
-            // REDIRECT para evitar reenvío del formulario al recargar
+            //reenvío del formulario al recargar
             header("Location: " . $_SERVER['PHP_SELF']);
             exit();
             
@@ -162,10 +162,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['subir_declaracion'])) 
     }
 }
 
-// Obtener mensaje de la sesión si existe (después del redirect)
+// Obtener mensaje de la sesión si existe
 if (isset($_SESSION['mensaje'])) {
     $mensaje = $_SESSION['mensaje'];
-    unset($_SESSION['mensaje']); // Limpiar el mensaje después de mostrarlo
+    unset($_SESSION['mensaje']); 
 }
 ?>
 
@@ -194,6 +194,25 @@ if (isset($_SESSION['mensaje'])) {
             border-radius: 10px;
             font-weight: 600;
         }
+
+        .page-header {
+        text-align: center;
+        margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #000000ff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+
         .stats-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -216,12 +235,12 @@ if (isset($_SESSION['mensaje'])) {
     <?php include '../navbar.php'; ?>
 
     <main class="container">
-        
+        <div class="page-header" style="padding: 4rem 0; text-align: center; margin-bottom: 3rem;">
+            <h1> <i class="fa-solid fa-file-invoice-dollar"></i> Declarar Renta</h1>
+            <p>Sube los documentos necesarios para tu declaraciòn de renta</p>
+        </div>
         <div class="form-section">
-            <h1 class="fw-bold text-primary text-center">
-                <i class="fa-solid fa-file-invoice-dollar"></i> Declarar Renta
-            </h1>
-            <p class="text-muted text-center">Sube los documentos necesarios para tu declaración de renta</p>
+            
 
             <?php echo $mensaje; ?>
 
@@ -260,21 +279,7 @@ if (isset($_SESSION['mensaje'])) {
             </form>
         </div>
 
-        <!-- Información importante -->
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="alert alert-info">
-                    <h5><i class="fas fa-info-circle me-2"></i>Documentos recomendados para tu declaración:</h5>
-                    <ul class="mb-0">
-                        <li>Estados de cuenta bancarios</li>
-                        <li>Comprobantes de ingresos (nómina, contratos)</li>
-                        <li>Facturas de gastos deducibles</li>
-                        <li>Documentos de identificación</li>
-                        <li>Certificados de retención en la fuente</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

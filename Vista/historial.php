@@ -32,7 +32,7 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        /* Mantener los estilos existentes y agregar: */
+
         .observaciones-box {
             background-color: #f8f9fa;
             border-left: 4px solid #0d6efd;
@@ -47,6 +47,23 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
         .declaracion-detalle:hover {
             background-color: #f8f9fa;
         }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #000000ff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
     </style>
 </head>
 <body>
@@ -54,8 +71,11 @@ $declaraciones = $stmt_declaraciones->fetchAll(PDO::FETCH_ASSOC);
 
     <main class="bg-light min-vh-100">
         <div class="container">
-            <h1 class="page-title"><i class="fa-solid fa-clock-rotate-left me-2"></i>Historial de Declaraciones</h1>
-
+            <div class="page-header">
+                <div class="page-header"   style="padding: 4rem 0; text-align: center; margin-bottom: 3rem;">
+                    <h1><i class="fa-solid fa-clock-rotate-left me-2"></i>Historial de Declaraciones</h1>
+                </div>
+            </div>
             <?php if (empty($declaraciones)): ?>
                 <div class="card text-center py-5">
                     <i class="fa-solid fa-folder-open fa-3x text-muted mb-3"></i>

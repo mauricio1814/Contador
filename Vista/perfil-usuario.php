@@ -125,10 +125,14 @@ if (!$contador) {
         .contador-card {
             border-left: 4px solid #28a745;
         }
+
+
+
     </style>
 </head>
 <body>
     <?php include '../navbar.php'; ?>
+    <?php include '../modal-logout.php'; ?>
 
     <div class="container mt-4">
         <!-- Header del Perfil -->
@@ -146,8 +150,7 @@ if (!$contador) {
                                     <i class="fas fa-file-invoice-dollar me-2"></i>Mis Declaraciones
                                 </a>
                                 
-                                <a href="../logout.php" class="btn btn-outline-danger" 
-                                   onclick="return confirm('¿Estás seguro de que deseas cerrar sesión?')">
+                                <a href="../logout.php" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
                                 </a>
                             </div>
@@ -157,7 +160,7 @@ if (!$contador) {
             </div>
         </div>
 
-        <!-- Estadísticas -->
+        <!-- Estadísticas 
         <div class="row mb-4">
             <div class="col-md-4">
                 <div class="stats-card">
@@ -178,43 +181,47 @@ if (!$contador) {
                 </div>
             </div>
         </div>
+        -->
         
 
         <div class="row">
             <!-- Información Personal -->
             <div class="col-md-6">
-                <div class="usuario-card">
-                    <h4 class="mb-3"><i class="fas fa-user-circle me-2"></i>Información Personal</h4>
-                    
-                    <div class="mb-3">
-                        <strong><i class="fa fa-user me-2 text-primary"></i>Nombre:</strong><br>
-                        <?php echo $usuario['nombre'] ?? 'N/A'; ?> <?php echo $usuario['apellido'] ?? 'N/A'; ?>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <strong><i class="fas fa-id-card me-2 text-primary"></i>Documento:</strong><br>
-                        <?php echo $usuario['tipo_documento'] ?? 'N/A'; ?>: <?php echo $usuario['numero_documento'] ?? 'N/A'; ?>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <strong><i class="fas fa-envelope me-2 text-primary"></i>Correo:</strong><br>
-                        <?php echo $usuario['correo'] ?? 'N/A'; ?>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <strong><i class="fas fa-phone me-2 text-primary"></i>Teléfono:</strong><br>
-                        <?php echo $usuario['telefono'] ?? 'No registrado'; ?>
-                    </div>
+                <div class="borde-user">
 
-                    <div class="mb-3">
-                        <strong><i class="fa fa-user me-2 text-primary"></i>Cargo:</strong><br>
-                        Contribuyente
-                    </div>
-                    
-                    <div class="d-grid">
-                        <a href="editar-perfil.php" class="btn btn-usuario">
-                            <i class="fas fa-edit me-2"></i>Editar Información
-                        </a>
+                        <div class="usuario-card">
+                            <h4 class="mb-3"><i class="fas fa-user-circle me-2"></i>Información Personal</h4>
+                            
+                            <div class="mb-3">
+                                <strong><i class="fa fa-user me-2 text-primary"></i>Nombre:</strong><br>
+                                <?php echo $usuario['nombre'] ?? 'N/A'; ?> <?php echo $usuario['apellido'] ?? 'N/A'; ?>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <strong><i class="fas fa-id-card me-2 text-primary"></i>Documento:</strong><br>
+                                <?php echo $usuario['tipo_documento'] ?? 'N/A'; ?>: <?php echo $usuario['numero_documento'] ?? 'N/A'; ?>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <strong><i class="fas fa-envelope me-2 text-primary"></i>Correo:</strong><br>
+                                <?php echo $usuario['correo'] ?? 'N/A'; ?>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <strong><i class="fas fa-phone me-2 text-primary"></i>Teléfono:</strong><br>
+                                <?php echo $usuario['telefono'] ?? 'No registrado'; ?>
+                        </div>
+
+                        <div class="mb-3">
+                            <strong><i class="fa fa-user me-2 text-primary"></i>Cargo:</strong><br>
+                            Contribuyente
+                        </div>
+                        
+                        <div class="d-grid">
+                            <a href="editar-perfil.php" class="btn btn-usuario">
+                                <i class="fas fa-edit me-2"></i>Editar Información
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,7 +280,7 @@ if (!$contador) {
         <div class="row mt-4">
             <div class="col-md-4">
                 <div class="usuario-card text-center">
-                    <i class="fas fa-file-invoice-dollar fa-2x text-success mb-3"></i>
+                    <i class="fas fa-file-invoice-dollar fa-2x text-primary mb-3"></i>
                     <h5>Declaraciones</h5>
                     <p class="text-muted">Gestionar mis declaraciones</p>
                     <a href="mis-declaraciones.php" class="btn btn-usuario">Ver Declaraciones</a>
@@ -281,7 +288,7 @@ if (!$contador) {
             </div>
             <div class="col-md-4">
                 <div class="usuario-card text-center">
-                    <i class="fas fa-history fa-2x text-info mb-3"></i>
+                    <i class="fas fa-history fa-2x text-primary mb-3"></i>
                     <h5>Historial</h5>
                     <p class="text-muted">Ver mi historial tributario</p>
                     <a href="historial.php" class="btn btn-usuario">Ver Historial</a>
@@ -289,10 +296,10 @@ if (!$contador) {
             </div>
             <div class="col-md-4">
                 <div class="usuario-card text-center">
-                    <i class="fas fa-cogs fa-2x text-warning mb-3"></i>
-                    <h5>Configuración</h5>
-                    <p class="text-muted">Ajustes de mi cuenta</p>
-                    <a href="configuracion.php" class="btn btn-usuario">Ajustes</a>
+                    <i class="fas fa-headset fa-2x text-primary mb-3"></i>
+                    <h5>Mis Reportes</h5>
+                    <p class="text-muted">Ver mis reportes de soporte</p>
+                    <a href="mis-reportes.php" class="btn btn-usuario">Ver Reportes</a>
                 </div>
             </div>
         </div>
